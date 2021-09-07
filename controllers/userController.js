@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const cloudinary = require('../helper/imageUpload');
-const User = require("../models/user");
+const User = require("../models/User");
 const registerValidator = require("../validator/registerValidator");
 const loginValidator = require("../validator/loginValidator");
 
