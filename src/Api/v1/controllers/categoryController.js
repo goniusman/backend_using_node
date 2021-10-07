@@ -4,6 +4,7 @@ const { serverError, resourceError } = require("../utils/error");
 const categoryValidator = require("../validator/categoryValidator");
 
 module.exports = {
+
   create(req, res) {
     let { category, description } = req.body;
 
@@ -67,7 +68,7 @@ module.exports = {
       .then((cat) => {
         cat.category = category;
         cat.description = description;
-        cat
+        Category
           .findOneAndUpdate({ _id: id }, { $set: cat }, { new: true })
           .then((result) => {
             return res.status(200).json({
@@ -84,11 +85,16 @@ module.exports = {
     let { id } = req.params;
     Category.findOneAndDelete({ _id: id })
       .then((result) => {
-        return res.status(204).json({
-          message: "Deleted Successfully",
-          ...result._doc,
-        });
+        if(result == null){
+          return res.json({success: true, message: "Category not found"})
+        }else{
+          return res.status(204).json({
+            message: "Deleted Successfully",
+            data: result
+          });
+        }
       })
       .catch((error) => serverError(res, error));
   },
+
 };

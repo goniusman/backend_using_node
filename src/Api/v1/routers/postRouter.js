@@ -1,5 +1,6 @@
-const router = require("express").Router();
-const authenticate = require("../authenticate");
+const router = require("express").Router({mergeParams: true});
+
+const authenticate = require("../../../authenticate");
 const {
   create,
   getAll,
@@ -13,20 +14,18 @@ const {
 // for authenticate user
 // const authenticate = require('../authenticate')
 
-router.get("/", getAll);
 
-router.get("/:id", getSinglePost);
+
 
 router.post("/", create);
-
+router.get("/", getAll);
+router.get('/:id', getSinglePost);
+router.put("/:id", update);
 router.post("/search/:query", searchQuery);
+router.put("/toggle/:id", toogleUpdate);
+router.delete("/:id", remove);
 
 // router.post('/upload/:id', imageUpload)
-
-router.put("/:id", update);
-router.put("/toggle/:id", toogleUpdate);
-
 // router.put('/issuetoggle/:id', updateSolved)
-router.delete("/:id", remove);
 
 module.exports = router;

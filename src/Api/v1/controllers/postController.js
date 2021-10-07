@@ -1,10 +1,13 @@
 const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 const Post = require("../models/Post");
 // const nodemailer = require("nodemailer")
 const { serverError, resourceError } = require("../utils/error");
 const postValidator = require("../validator/postValidator");
 
 module.exports = {
+  
   create(req, res) {
     let {
       title,
@@ -16,58 +19,71 @@ module.exports = {
       comments,
       isPublished,
     } = req.body;
-// console.log(req.body);
+    // console.log(req.body);
     let validate = postValidator({ title, description, category, tag, author });
+
+
+//     console.log(root)
+// return res.status(200).json({message: 'okay'})
 
     if (!validate.isValid) {
       return res.status(400).json(validate.error);
     } else {
-      // const dir = "./uploads";
-      // if (!fs.existsSync(dir)) {
-      //   fs.mkdirSync(dir);
-      // }
-      // if (req.files === null) {
-      //   return res.status(400).json({ file: "No file uploaded" });
-      // }
-      // let file = req.files.file;
+      
+      // if image has uploaded
+      if(req.files != null){
+        const dir =  "./uploads";
+        // const dir = `${__dirname }/../../../../` + "uploads";
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir);
+        }
+        if (req.files === null) {
+          return res.status(400).json({ file: "No file uploaded" });
+        }
+        let file = req.files.file;
 
-      // let filePath = `/uploads/` + Date.now() + `-${file.name}`;
-      // file.mv(
-      //   `${__dirname}/../client/public/uploads/` + Date.now() + `-${file.name}`,
-      //   (err) => {
-      //     if (err) {
-      //       console.log(err);
-      //       return res.status(500).json(err);
-      //     }
-      //   }
-      // );
+        var filePath = `/uploads/` + Date.now() + `-${file.name}`;
+
+
+        const root = path.resolve('./')
+        file.mv(
+          `${root}/uploads/` + Date.now() + `-${file.name}`,
+          (err) => {
+            if (err) { 
+              // console.log(err);
+              // return res.status(500).json(err);
+              return res.json({ success: false,message: "image not uploaded", error: err });
+            }
+          }
+        );
+      }
+    
 
       let post = new Post({
         title,
-        description,
+        description, 
         image,
         category,
         tag,
         author,
-        image: 'filePath',
+        image: filePath || 'null',
         comments,
         isPublished,
       });
+
       post
         .save()
         .then((post) => {
-          console.log(post);
-          return res.status(201).json({
-            ...post._doc,
-          });
+          return res.json({ success: true,message: "User Created Successfully", data: post });
         })
         .catch((error) => serverError(res, error));
     }
-  },
+  }, 
 
   getAll(req, res) {
+    // console.log('test')
     Post.find()
-      // .limit(5)
+      // .limit(2)
       .then((posts) => {
   
         if (posts.length === 0) {
@@ -80,7 +96,7 @@ module.exports = {
        
           // return res.status(200).json(posts);
          
-          res.json({ success: true, data: posts });
+          return res.json({ success: true, data: posts });
         }
       })
       .catch((error) => serverError(res, error));
@@ -88,7 +104,6 @@ module.exports = {
 
   getSinglePost(req, res) {
     let { id } = req.params;
-
     Post.findById(id)
       .then((post) => {
         if (!post) {
@@ -96,10 +111,7 @@ module.exports = {
             message: "No post Found",
           });
         } else {
-
-          
-          res.json({ success: true, data: post });
-          // return res.status(200).json(post);
+         return res.json({ success: true, data: post });
         } 
       })
       .catch((error) => serverError(res, error));
@@ -108,7 +120,6 @@ module.exports = {
   update(req, res) {
     let { id } = req.params;
     let { title, description, category, tag } = req.body;
-    console.log(req.body);
     Post.findById(id)
       .then((post) => {
         post.title = title;
@@ -117,14 +128,7 @@ module.exports = {
         post.tag = tag;
         Post.findOneAndUpdate({ _id: id }, { $set: post }, { new: true })
           .then((result) => {
-            // return res.status(201).json({
-            //   message: "Updated Successfully",
-            //   ...result._doc,
-            // });
-
             return res.json({ success: true, message: "Post Updated Successfully", data: result });
-            // console.log(result)
-
           })
           .catch((error) => serverError(res, error));
       })
@@ -135,7 +139,13 @@ module.exports = {
     let { id } = req.params;
     Post.findOneAndDelete({ _id: id })
       .then((result) => {
-        return res.json({ success: true });
+        if (result == null) {
+          return res.status(404).json({
+            message: "No Post Found",
+          });
+        }else{
+          return res.json({ success: true, message: 'Post deleted successfully', data: result });
+        }
       })
       .catch((error) => serverError(res, error));
   },
@@ -166,30 +176,32 @@ module.exports = {
 
     const file = req.files.file;
 
-    file.mv(`${__dirname}/../client/public/uploads/${file.name}`, (err) => {
-      if (err) {
-        console.error(err);
-        return res.status(500).send(err);
-      }
+    var filePath = `/uploads/` + Date.now() + `-${file.name}`;
 
-      post
-        .findById(id)
-        .then((post) => {
-          post.image = `/uploads/${file.name}`;
-          post
-            .findOneAndUpdate({ _id: id }, { $set: post }, { new: true })
-            .then((result) => {
-              return res.status(200).json({
-                message: "Image Updated Successfully",
-                ...result._doc,
-              });
-            })
-            .catch((error) => serverError(res, error));
-        })
-        .catch((error) => serverError(res, error));
+    const root = path.resolve('./')
+        file.mv(
+          `${root}/uploads/` + Date.now() + `-${file.name}`,
+          (err) => {
+            if (err) { 
+              // console.log(err);
+              // return res.status(500).json(err);
+              return res.json({ success: false, message: "image not uploaded", error: err });
+            }
+          }
+        )
 
-      // res.json({ fileName: file.name, filePath: `/uploads/${file.name}` });
-    });
+        post
+          .findById(id)
+          .then((post) => {
+            post.image = filePath;
+            post
+              .findOneAndUpdate({ _id: id }, { $set: post }, { new: true })
+              .then((result) => {
+                return res.json({success: true, message: "image uploaded successfully"})
+              })
+              .catch((error) => serverError(res, error));
+          })
+          .catch((error) => serverError(res, error));
   },
 
   searchQuery(req, res) {
@@ -225,4 +237,5 @@ module.exports = {
       console.log(error);
     }
   },
+
 };

@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const authenticate = require("../authenticate");
+const authenticate = require("../../../authenticate");
 const { create, getAll, remove } = require("../controllers/commentController");
 // const authenticate = require('../authenticket')
 

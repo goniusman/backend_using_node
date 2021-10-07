@@ -6,10 +6,13 @@ const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 var passport = require("passport");
 const path = require("path");
+const multer = require('multer');
 // // const { static } = require("express")
 
 const app = express();
-app.use(morgan("dev"));
+app.use(morgan("dev")); 
+
+
 
 // it use for production
 app.use(cors());
@@ -23,23 +26,27 @@ require("./passport")(passport);
 
 app.use(fileUpload());
 
+
+// app.use(express.static(__dirname + '/public'));
+// app.use(multer({ dest: './uploads/'}));
+
 // router
-const postRouter = require("./routers/postRouter");
-const commentRouter = require("./routers/commentRouter");
-const userRouter = require("./routers/userRouter");
-const categoryRouter = require("./routers/categoryRouter");
+const userRouter = require("./Api/v1/routers/userRouter");
+const postRouter = require("./Api/v1/routers/postRouter");
+const categoryRouter = require("./Api/v1/routers/categoryRouter");
+const commentRouter = require("./Api/v1/routers/commentRouter");
 
-app.use(express.static("data/uploads"));
-
-app.use("/api/user/", userRouter);
-
-app.use("/api/post/", postRouter);
-app.use("/api/post/single-post/", commentRouter);
-app.use("/api/category/", categoryRouter);
+// app.use(express.static("data/uploads"));
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Server is running" });
 });
+
+app.use("/api/user/", userRouter); 
+app.use("/api/post/", postRouter);
+app.use("/api/category/", categoryRouter);
+app.use("/api/post/single-post/", commentRouter);
+ 
 
 // if(process.env.NODE_ENV === 'production'){
 //     app.use(express.static('client/build'))
@@ -59,3 +66,6 @@ app.listen(PORT, () => {
     }
   );
 });
+
+
+

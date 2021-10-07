@@ -128,56 +128,58 @@ module.exports = {
 
   allUser(req, res) {
     User.find()
-      .then((users) => {
+      .then((users) => { 
+        console.log(users) 
+        if(!users){
+          resourceError(res, 'There is no users');
+        }
         return res.status(200).json(users);
       })
       .catch((error) => serverError(res, error));
   },
 
-  imageUpload(req, res) {
-    // const { userId } = req.params;
+  async imageUpload(req, res) {
+
     const { user } = req;
 
-    // if(!user){
-    //   return res
-    //   .status(401)
-    //   .json({ success: false, message: 'unauthorized access!' });
-    // }
+    if(!user){
+      return res
+      .status(401)
+      .json({ success: false, message: 'unauthorized access!' });
+    }
 
-    //  const result =  cloudinary.uploader.upload(req.files.profile.name, {
+    console.log(req.file)
+    return res.json({ success: true, message: 'Access granted!' });
+    // console.log(req.files)
+    //  const result = await cloudinary.uploader.upload(req.files.path, {
     //       public_id: `${user._id}_profile`,
     //       width: 500,
     //       height: 500,
     //       crop: 'fill',
     //     });
-        
 
-      //   console.log(req.files);
-    
+      // result.then(re => console.log(re)).catch(err => console.log(err))
 
       // try { 
 
-      //   const updatedUser =  User.findByIdAndUpdate(
+      //   const updatedUser = await User.findByIdAndUpdate(
       //     user._id,
-      //     { image: req.files.profile.data },
+      //     { image: result.url },
       //     { new: true }
       //   );
 
-      //   res
+      //  return res
       //     .status(201)
-      //     .json({ success: true, message: 'Your profile has updated!', updatedUser });
+      //     .json({ success: true, message: 'Your profile has updated!' });
 
       // } catch (error) {
-      //   res
+      //   return res
       //     .status(500)
       //     .json({ success: false, message: 'server error, try after some time' });
 
-      //   console.log('Error while uploading profile image', error.message);
-        
+      //   console.log('Error while uploading profile image', error);
       // }
 
-
-  
   },
 
   logOut(req, res) {

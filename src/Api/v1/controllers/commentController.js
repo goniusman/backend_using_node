@@ -5,6 +5,7 @@ const { serverError, resourceError } = require("../utils/error");
 const commentValidator = require("../validator/commentValidator");
 
 module.exports = {
+  
   create(req, res) {
     let { name, email, website, comment, id } = req.body;
 
@@ -23,9 +24,7 @@ module.exports = {
               post
                 .save()
                 .then((post) => {
-                  return res.status(201).json({
-                    ...comment._doc,
-                  });
+                  return res.status(201).json({success: true, message: "okay"});
                 })
                 .catch((error) => serverError(res, error));
             })
@@ -92,4 +91,5 @@ module.exports = {
       })
       .catch((error) => serverError(res, error));
   },
+
 };
