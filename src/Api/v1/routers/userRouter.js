@@ -13,6 +13,8 @@ const {
   allUser,
   imageUpload,
   logOut,
+  verifyEmail,
+  forgotPassword
 } = require("../controllers/userController");
 
 const multer = require('multer');
@@ -47,6 +49,8 @@ router.post("/register", validateUserSignUp, userVlidation, register);
 router.post("/login", validateUserSignIn, userVlidation, login);
 // all user route
 router.get("/all", isAuth,   allUser);
+router.post("/verify-email",  verifyEmail);
+router.post("/forgot-password", forgotPassword);
 
 // upload images
 // router.post("/profile-picture", isAuth,  upload.single('featuredImage'),  imageUpload);

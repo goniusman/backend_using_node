@@ -1,12 +1,19 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { isValidObjectId } = require("mongoose");
+const crypto = require("crypto");
+
 
 const cloudinary = require('../helper/imageUpload');
 const User = require("../models/User");
+const VToken = require("../models/VToken");
+const RToken = require("../models/RToken");
 const registerValidator = require("../validator/registerValidator");
 const loginValidator = require("../validator/loginValidator");
 
 const { serverError, resourceError } = require("../utils/error");
+const { createRandomByte } = require("../utils/helper");
+const { generateOTP, mailTrap, generateHTMLTemplate, plainEmailTemplate, generatePasswordResetTemplate } = require("../utils/mail");
 
 // login controller
 module.exports = {
@@ -30,7 +37,7 @@ module.exports = {
           if (user) {
             return resourceError(res, "Email Already Exist");
           }
-   
+
           bcrypt.hash(password, 11, (err, hash) => {
             if (err) {
               return resourceError(res, "Server Error Occurred");
@@ -45,17 +52,103 @@ module.exports = {
               password: hash,
             });
 
-            user
-              .save()
-              .then((user) => {
-                return res.json({ success: true,message: "User Created Successfully", data: user });
-              })
-              .catch((error) => serverError(res, error));
+
+          
+
+          var ot = generateOTP();
+  
+          const verificaatinToken = new VToken({
+            owner: user._id,
+            token: ot
+          })
+
+          verificaatinToken.save()
+ 
+          mailTrap().sendMail({ 
+            from: 'goniusman@offenta.com',
+            // from: 'goniusman400@gmail.com',
+            to: user.email,
+            subject: "Verify Your Email Account",
+            html: generateHTMLTemplate(ot)
+          })
+
+          user
+            .save()
+            .then((user) => {
+              return res.json({ success: true,message: "User Created Successfully", data: user });
+            })
+            .catch((error) => serverError(res, error));
           });
         })
         .catch((error) => serverError(res, error));
     }
   }, 
+
+  async verifyEmail(req,res){
+
+    const {userId, otp} = req.body 
+
+    if(!userId || !otp.trim() ) return resourceError(res, "Invalid request, missing parameters!")
+
+    if(!isValidObjectId(userId)) return resourceError(res, "Invalid user id!")
+
+    const user = await User.findById(userId)
+    if(!user) return resourceError(res, "Sorry, user not found f!")
+
+    if(user.verified) return resourceError(res, "this account is already verifyied!")
+  
+    const token = await VToken.findOne({owner: user._id})
+    // console.log(token)
+    if(!token) return resourceError(res, "Sorry user token not Found!")
+    // console.log(token)
+
+    const isMatched = await token.compareToken(otp)
+    console.log(isMatched)
+    if(!isMatched) return resourceError(res, "please provide a valid token!")
+
+    user.verified = true;
+
+    await user.save()
+
+    mailTrap().sendMail({ 
+      from: 'goniusman@offenta.com',
+      // from: 'goniusman400@gmail.com',
+      to: user.email,
+      subject: "Email Account Verified",
+      html: plainEmailTemplate("Email Verified Successfully", "Thanks for contacting with us")
+    })
+
+    await VToken.findByIdAndDelete(token._id)
+
+    res.json({success: true, message: 'Verified Email Account', user: user})
+    
+  },
+
+  async forgotPassword(req, res){
+    const {email} = req.body
+    if(!email) return resourceError(res, "Please Provide a valid email")
+
+    const user = await User.findOne({email});
+    if(!user) return resourceError(res, "User not found")
+
+   const token = await RToken.findOne({owner: user._id});
+   //  if(token) return resourceError(res, "Only after one hour you can request for another token")
+
+   const randomBytes = await createRandomByte()
+   const rtoken = new RToken({owner: user._id, token: randomBytes})
+   await rtoken.save()
+
+   mailTrap().sendMail({ 
+    from: 'goniusman@offenta.com',
+    // from: 'goniusman400@gmail.com',
+    to: user.email,
+    subject: "Reset Password",
+    html: generatePasswordResetTemplate(`http://localhost:5000/reset-password?token=${randomBytes}&id=${user._id}`)
+   })
+   
+   res.json({success: true, message: "sucessfully reset password"})
+
+  },
 
   login(req, res) {
     let { email, password } = req.body;
