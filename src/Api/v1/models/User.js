@@ -46,7 +46,6 @@ const userSchema = new Schema({
     if (this.isModified('password')) {
       bcrypt.hash(this.password, 8, (err, hash) => {
         if (err) return next(err);
-  
         this.password = hash;
         next();
       });

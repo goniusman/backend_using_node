@@ -3,9 +3,9 @@ const validator = require('validator')
 const validate = user => {
     let error = {}
 
-    if (!user.name) {
-        error.name = 'Please Provide Your Name'
-    }
+    // if (!user.name) {
+    //     error.name = 'Please Provide Your Name'
+    // }
     if (!user.username) {
         error.username = 'Please Provide Your Username'
     }

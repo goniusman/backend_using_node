@@ -22,7 +22,6 @@ module.exports = {
     let { name, email, role,username, password, confirmPassword } = req.body;
     console.log(req.body);
     let validate = registerValidator({
-      name,
       email,
       username,
       password,
@@ -30,18 +29,15 @@ module.exports = {
     });
 
     if (!validate.isValid) {
-      return res.json({ success: false,message: "Empty Value", data: validate.error });
+      console.log(validate.error);
+      return res.json({ success: false, message: "Empty Value", data: validate.error });
     } else {
       User.findOne({ email })
         .then((user) => {
           if (user) {
+            console.log("Email Already Exist");
             return resourceError(res, "Email Already Exist");
-          }
-
-          bcrypt.hash(password, 11, (err, hash) => {
-            if (err) {
-              return resourceError(res, "Server Error Occurred");
-            }
+          }else{
 
             let user = new User({
               name,
@@ -49,7 +45,7 @@ module.exports = {
               username,
               role,
               // image: "",
-              password: hash,
+              password,
             });
 
 
@@ -75,10 +71,11 @@ module.exports = {
           user
             .save()
             .then((user) => {
-              return res.json({ success: true,message: "User Created Successfully", data: user });
+              console.log(user);
+              return res.json({ success: true, message: "User Created Successfully", data: user });
             })
             .catch((error) => serverError(res, error));
-          });
+          }
         })
         .catch((error) => serverError(res, error));
     }
@@ -106,22 +103,23 @@ module.exports = {
     console.log(isMatched)
     if(!isMatched) return resourceError(res, "please provide a valid token!")
 
-    user.verified = true;
 
-    await user.save()
+    //// the exact error is here
+    // user.verified = true;
+    // await user.save()
 
     mailTrap().sendMail({ 
       from: 'goniusman@offenta.com',
       // from: 'goniusman400@gmail.com',
       to: user.email,
-      subject: "Email Account Verified",
+      subject: "Email Verified",
       html: plainEmailTemplate("Email Verified Successfully", "Thanks for contacting with us")
     })
 
     await VToken.findByIdAndDelete(token._id)
 
     res.json({success: true, message: 'Verified Email Account', user: user})
-    
+    console.log('hi i am here') 
   },
 
   async forgotPassword(req, res){
@@ -142,11 +140,41 @@ module.exports = {
     from: 'goniusman@offenta.com',
     // from: 'goniusman400@gmail.com',
     to: user.email,
-    subject: "Reset Password",
+    subject: "Forgot Password",
     html: generatePasswordResetTemplate(`http://localhost:5000/reset-password?token=${randomBytes}&id=${user._id}`)
    })
    
-   res.json({success: true, message: "sucessfully reset password"})
+   res.json({success: true, message: "Please check your email"})
+
+  },
+
+  async resetPassword(req, res) {
+    const {password} = req.body;
+
+    const user = await User.findById(req.user._id)
+    if(!user) return resourceError(res, "User not found")
+
+    const isSamePassword = await user.comparePassword(password)
+    if(isSamePassword) return resourceError(res, "new password must be defferent")
+    
+    if(password.trim().length < 6 || password.trim().length > 20) return resourceError(res, "password must be 6 to 20 characters")
+
+    user.password = password.trim();
+    await user.save()
+
+    await RToken.findOneAndDelete({owner: user._id})
+
+
+    mailTrap().sendMail({ 
+      from: 'goniusman@offenta.com',
+      // from: 'goniusman400@gmail.com',
+      to: user.email,
+      subject: "Password Reset Successfully",
+      html: plainEmailTemplate("Password Reset Successfully", "Now you can login with new password")
+     })
+     
+     res.json({success: true, message: " Password reset sucessfully"})
+  
 
   },
 

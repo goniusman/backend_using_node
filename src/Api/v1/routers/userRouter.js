@@ -6,6 +6,7 @@ const {
 } = require('../middlewares/validation/user');
 
 const { isAuth } = require('../middlewares/auth');
+const { isResetTokenValid } = require('../middlewares/user');
 
 const {
   login,
@@ -14,7 +15,8 @@ const {
   imageUpload,
   logOut,
   verifyEmail,
-  forgotPassword
+  forgotPassword,
+  resetPassword
 } = require("../controllers/userController");
 
 const multer = require('multer');
@@ -51,6 +53,7 @@ router.post("/login", validateUserSignIn, userVlidation, login);
 router.get("/all", isAuth,   allUser);
 router.post("/verify-email",  verifyEmail);
 router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", isResetTokenValid, resetPassword);
 
 // upload images
 // router.post("/profile-picture", isAuth,  upload.single('featuredImage'),  imageUpload);
