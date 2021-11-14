@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./passport")(passport);
 
-app.use(fileUpload());
+// app.use(fileUpload());
 
 
 // app.use(express.static(__dirname + '/public'));
@@ -68,4 +68,4 @@ app.listen(PORT, () => {
 });
 
 
-
+module.exports = app

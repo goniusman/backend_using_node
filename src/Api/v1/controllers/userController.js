@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const { isValidObjectId } = require("mongoose");
 const crypto = require("crypto");
 
-
 const cloudinary = require('../helper/imageUpload');
 const User = require("../models/User");
 const VToken = require("../models/VToken");
@@ -269,37 +268,35 @@ module.exports = {
       .json({ success: false, message: 'unauthorized access!' });
     }
 
-    console.log(req.file)
-    return res.json({ success: true, message: 'Access granted!' });
-    // console.log(req.files)
-    //  const result = await cloudinary.uploader.upload(req.files.path, {
-    //       public_id: `${user._id}_profile`,
-    //       width: 500,
-    //       height: 500,
-    //       crop: 'fill',
-    //     });
 
-      // result.then(re => console.log(re)).catch(err => console.log(err))
 
-      // try { 
+    // cloudinary uploader
+     const result = await cloudinary.uploader.upload(req.files.path, {
+          public_id: `${user._id}_profile`,
+          width: 500,
+          height: 500,
+          crop: 'fill',
+        });
 
-      //   const updatedUser = await User.findByIdAndUpdate(
-      //     user._id,
-      //     { image: result.url },
-      //     { new: true }
-      //   );
+      try { 
 
-      //  return res
-      //     .status(201)
-      //     .json({ success: true, message: 'Your profile has updated!' });
+        const updatedUser = await User.findByIdAndUpdate(
+          user._id,
+          { image: req.file.path},
+          { new: true }
+        );
 
-      // } catch (error) {
-      //   return res
-      //     .status(500)
-      //     .json({ success: false, message: 'server error, try after some time' });
+       return res
+          .status(201)
+          .json({ success: true, message: 'Your profile has updated!' });
 
-      //   console.log('Error while uploading profile image', error);
-      // }
+      } catch (error) {
+        return res
+          .status(500)
+          .json({ success: false, message: 'server error, try after some time' });
+
+        console.log('Error while uploading profile image', error);
+      }
 
   },
 
@@ -321,5 +318,4 @@ module.exports = {
     }
   }
   
-
 };
