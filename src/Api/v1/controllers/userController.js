@@ -99,13 +99,14 @@ module.exports = {
     // console.log(token)
 
     const isMatched = await token.compareToken(otp)
-    console.log(isMatched)
+    // console.log(isMatched)
     if(!isMatched) return resourceError(res, "please provide a valid token!")
 
 
     //// the exact error is here
-    // user.verified = true;
+    user.verified = true;
     // await user.save()
+    await User.findOneAndUpdate({ _id: userId }, { $set: user }, { new: true });
 
     mailTrap().sendMail({ 
       from: 'goniusman@offenta.com',
@@ -118,7 +119,7 @@ module.exports = {
     await VToken.findByIdAndDelete(token._id)
 
     res.json({success: true, message: 'Verified Email Account', user: user})
-    console.log('hi i am here') 
+    // console.log('hi i am here') 
   },
 
   async forgotPassword(req, res){
@@ -271,18 +272,19 @@ module.exports = {
 
 
     // cloudinary uploader
-     const result = await cloudinary.uploader.upload(req.files.path, {
+     const result = await cloudinary.uploader.upload(req.file.path, {
           public_id: `${user._id}_profile`,
           width: 500,
           height: 500,
           crop: 'fill',
         });
+        // console.log(result);
 
       try { 
 
         const updatedUser = await User.findByIdAndUpdate(
           user._id,
-          { image: req.file.path},
+          { image: result.url},
           { new: true }
         );
 
