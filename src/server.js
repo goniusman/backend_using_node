@@ -8,11 +8,9 @@ const fileUpload = require("express-fileupload");
 var passport = require("passport");
 const path = require("path");
 const multer = require('multer');
-<<<<<<< HEAD
-const winston = require('./log');
-=======
+const logger = require('./Config/Logger.ts'); 
 
->>>>>>> a421d478fd261ae99178570cd2769481f0243193
+
 // // const { static } = require("express")
 
 // for dot env 
@@ -20,10 +18,10 @@ require('dotenv').config();
 
 const app = express();
 
-// /// for loging information 
+/// for loging information 
 // app.use(morgan("dev")); 
-// app.use(morgan('combined', { stream: winston.stream }));
-// winston.info('some error occured');
+app.use(morgan('combined', { stream: winston.stream }));
+logger.info('some error occured');
 
 
 // cross origin platform
@@ -35,11 +33,6 @@ app.use(bodyParser.json());
 
 app.use(passport.initialize());
 require("./passport")(passport);
-
-<<<<<<< HEAD
-// app.use(fileUpload());
-=======
->>>>>>> a421d478fd261ae99178570cd2769481f0243193
 
 // app.use(fileUpload());
 

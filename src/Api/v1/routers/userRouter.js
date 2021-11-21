@@ -1,10 +1,7 @@
 const router = require("express").Router();
-<<<<<<< HEAD
 const path = require("path");
-=======
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('cloudinary').v2;
->>>>>>> a421d478fd261ae99178570cd2769481f0243193
 const {
   validateUserSignUp,
   userVlidation,
@@ -44,7 +41,7 @@ const storage = multer.diskStorage({});
 // });
 
 
-const fileFilter = (req, file, cb) => {
+
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('image')) {

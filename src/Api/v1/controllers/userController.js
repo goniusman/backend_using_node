@@ -267,23 +267,6 @@ module.exports = {
       .status(401)
       .json({ success: false, message: 'unauthorized access!' });
     
-      const result = await cloudinary.uploader.upload(req.file.path, {
-        public_id: `${user._id}_profile`,
-        width: 500,
-        height: 500,
-        crop: 'fill',
-      });
-
-      try { 
-
-        const updatedUser = await User.findByIdAndUpdate(
-          user._id,
-          { image: result.url },
-          { new: true }
-        );
-
-
-
     // cloudinary uploader
      const result = await cloudinary.uploader.upload(req.file.path, {
           public_id: `${user._id}_profile`,

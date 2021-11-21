@@ -5,7 +5,7 @@ const Post = require("../models/Post");
 // const nodemailer = require("nodemailer")
 const { serverError, resourceError } = require("../utils/error");
 const postValidator = require("../validator/postValidator");
-const winston = require('../../../log');
+// const winston = require('../../../log');
 
 module.exports = {
   
