@@ -7,11 +7,15 @@ const fileUpload = require("express-fileupload");
 var passport = require("passport");
 const path = require("path");
 const multer = require('multer');
+const winston = require('./log');
 // // const { static } = require("express")
 
 const app = express();
-app.use(morgan("dev")); 
 
+// /// for loging information 
+// app.use(morgan("dev")); 
+// app.use(morgan('combined', { stream: winston.stream }));
+// winston.info('some error occured');
 
 
 // it use for production
@@ -69,3 +73,14 @@ app.listen(PORT, () => {
 
 
 module.exports = app
+
+
+
+
+
+
+
+
+
+
+

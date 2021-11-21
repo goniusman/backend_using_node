@@ -5,6 +5,7 @@ const Post = require("../models/Post");
 // const nodemailer = require("nodemailer")
 const { serverError, resourceError } = require("../utils/error");
 const postValidator = require("../validator/postValidator");
+const winston = require('../../../log');
 
 module.exports = {
   
@@ -82,6 +83,7 @@ module.exports = {
 
   getAll(req, res) {
     // console.log('test')
+    winston.info('I am here this is your point post file\n')
     Post.find()
       // .limit(2)
       .then((posts) => {
