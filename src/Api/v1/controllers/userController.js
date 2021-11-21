@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { isValidObjectId } = require("mongoose");
 const crypto = require("crypto");
-
+// const cloudinary = require('cloudinary').v2;
 
 const cloudinary = require('../helper/imageUpload');
 const User = require("../models/User");
@@ -263,43 +263,36 @@ module.exports = {
 
     const { user } = req;
 
-    if(!user){
-      return res
+    if(!user) return res
       .status(401)
       .json({ success: false, message: 'unauthorized access!' });
-    }
+    
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        public_id: `${user._id}_profile`,
+        width: 500,
+        height: 500,
+        crop: 'fill',
+      });
 
-    console.log(req.file)
-    return res.json({ success: true, message: 'Access granted!' });
-    // console.log(req.files)
-    //  const result = await cloudinary.uploader.upload(req.files.path, {
-    //       public_id: `${user._id}_profile`,
-    //       width: 500,
-    //       height: 500,
-    //       crop: 'fill',
-    //     });
+      try { 
 
-      // result.then(re => console.log(re)).catch(err => console.log(err))
+        const updatedUser = await User.findByIdAndUpdate(
+          user._id,
+          { image: result.url },
+          { new: true }
+        );
 
-      // try { 
+       return res
+          .status(201)
+          .json({ success: true, message: 'Your profile has updated!' });
 
-      //   const updatedUser = await User.findByIdAndUpdate(
-      //     user._id,
-      //     { image: result.url },
-      //     { new: true }
-      //   );
+      } catch (error) {
 
-      //  return res
-      //     .status(201)
-      //     .json({ success: true, message: 'Your profile has updated!' });
+        return res
+          .json({ success: false, message: error.message });
+          console.log('Error while uploading profile image', error);
 
-      // } catch (error) {
-      //   return res
-      //     .status(500)
-      //     .json({ success: false, message: 'server error, try after some time' });
-
-      //   console.log('Error while uploading profile image', error);
-      // }
+      }
 
   },
 

@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 const {
   validateUserSignUp,
   userVlidation,
@@ -21,28 +23,39 @@ const {
 
 const multer = require('multer');
 
-// const storage = multer.diskStorage({});
+const storage = multer.diskStorage({});
 
-const storage = multer.diskStorage({
-  
-  destination: function (request, file, callback) {
-    return;
-      callback(null, './uploads/');
-  },
-  filename: function (request, file, callback) {
-      console.log(file);
-      callback(null, file.originalname)
-  }
-});
 const fileFilter = (req, file, cb) => {
-
   if (file.mimetype.startsWith('image')) {
-    console.log(file)
-    cb(null, true);
+    cb(null, file.originalname);
   } else {
     cb('invalid image file!', false);
   }
 };
+
+// const storage = multer.diskStorage({
+//   destination: function (request, file, callback) {
+//       callback(null, './uploads');
+//   },
+//   filename: function (request, file, callback) {
+//       callback(null, Date.now()+"-"+file.originalname)
+//   }
+// });
+
+
+
+// const storage = new CloudinaryStorage({
+//   cloudinary: cloudinary,
+//   params: {
+//     folder: 'some-folder-name',
+//     format: async (req, file) => 'jpg', // supports promises as well
+//     public_id: (req, file) => console.log(file),
+//   },
+// });
+
+
+
+
 const upload = multer({ storage, fileFilter, limits: { fieldSize: 10 * 1024 * 1024 } });
 
 // Registration Route
@@ -56,7 +69,7 @@ router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", isResetTokenValid, resetPassword);
 
 // upload images
-// router.post("/profile-picture", isAuth,  upload.single('featuredImage'),  imageUpload);
+router.post("/profile-picture", isAuth,  upload.single('featuredImage'), imageUpload);
 
 
 // router.post('/profile-picture', upload.single('featuredImage') function (req, res) {
