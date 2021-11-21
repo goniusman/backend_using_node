@@ -1,5 +1,6 @@
 const express = require("express");
 const winston = require("winston");
+const fs = require('fs')
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -10,33 +11,25 @@ const path = require("path");
 const multer = require('multer');
 const logger = require('./Config/Logger.ts'); 
 
-
-// // const { static } = require("express")
-
-// for dot env 
+// for dot env  
 require('dotenv').config();
-
 const app = express();
-
-/// for loging information 
-// app.use(morgan("dev")); 
-app.use(morgan('combined', { stream: winston.stream }));
-logger.info('some error occured');
-
-
 // cross origin platform
 app.use(cors());
-
 //boyd parser when submited
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 app.use(passport.initialize());
 require("./passport")(passport);
 
-// app.use(fileUpload());
+// // default morgan packages without winston.
+// var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
+// app.use(morgan('common', { stream: accessLogStream })) 
 
- 
+/// for loging information 
+// app.use(morgan('combined', { stream: winston.stream.write }));
+// logger.info('some error occured');
+
 // app.use(express.static(__dirname + '/public'));
 // app.use(multer({ dest: './uploads/'}));
 
@@ -46,12 +39,13 @@ const postRouter = require("./Api/v1/routers/postRouter");
 const categoryRouter = require("./Api/v1/routers/categoryRouter");
 const commentRouter = require("./Api/v1/routers/commentRouter");
 
-// app.use(express.static("data/uploads"));
-
+ 
 app.get("/", (req, res) => {
+  const t = 'this is me'
+  logger.warn(`${t} hi there`)
   res.status(200).json({ message: "Server is running" });
-});
-
+});  
+  
 app.use("/api/user/", userRouter); 
 app.use("/api/post/", postRouter);
 app.use("/api/category/", categoryRouter);

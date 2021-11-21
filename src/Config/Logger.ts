@@ -1,5 +1,13 @@
 const appRoot = require('app-root-path');
-const winston = require('winston');
+const {createLogger, format, transports} = require('winston');
+
+const { combine, timestamp, label, printf } = format;
+ 
+const myFormat = printf(({ level, message, label, timestamp }) => {
+  return `${timestamp} [${label}] ${level}: ${message}`;
+});
+
+
 
 // define the custom settings for each transport (file, console)
 const options = {
@@ -23,17 +31,22 @@ const options = {
 // instantiate a new Winston Logger with the settings defined above
 let logger;
 if (process.env.Logging === 'off') {
-  logger = winston.createLogger({
+  logger = createLogger({
+    format: combine(
+      label({ label: 'right meow!' }),
+      timestamp(),
+      myFormat
+    ),
     transports: [
-      new winston.transports.File(options.file),
+      new transports.File(options.file),
     ],
     exitOnError: false, // do not exit on handled exceptions
   });
-} else {
-  logger = winston.createLogger({
+} else { 
+  logger = createLogger({
     transports: [
-      new winston.transports.File(options.file),
-      new winston.transports.Console(options.console),
+      new transports.File(options.file),
+      new transports.Console(options.console),
     ],
     exitOnError: false, // do not exit on handled exceptions
   });
