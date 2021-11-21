@@ -1,4 +1,5 @@
 const express = require("express");
+const winston = require("winston");
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -7,8 +8,15 @@ const fileUpload = require("express-fileupload");
 var passport = require("passport");
 const path = require("path");
 const multer = require('multer');
+<<<<<<< HEAD
 const winston = require('./log');
+=======
+
+>>>>>>> a421d478fd261ae99178570cd2769481f0243193
 // // const { static } = require("express")
+
+// for dot env 
+require('dotenv').config();
 
 const app = express();
 
@@ -18,7 +26,7 @@ const app = express();
 // winston.info('some error occured');
 
 
-// it use for production
+// cross origin platform
 app.use(cors());
 
 //boyd parser when submited
@@ -28,9 +36,14 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./passport")(passport);
 
+<<<<<<< HEAD
+// app.use(fileUpload());
+=======
+>>>>>>> a421d478fd261ae99178570cd2769481f0243193
+
 // app.use(fileUpload());
 
-
+ 
 // app.use(express.static(__dirname + '/public'));
 // app.use(multer({ dest: './uploads/'}));
 
@@ -59,7 +72,7 @@ app.use("/api/post/single-post/", commentRouter);
 //     })
 // }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; 
 
 app.listen(PORT, () => {
   mongoose.connect(
@@ -84,3 +97,21 @@ module.exports = app
 
 
 
+
+// const logger = winston.createLogger({
+//   level: 'info',
+//   format: winston.format.json(),
+//   defaultMeta: { service: 'user-service' },
+//   transports: [
+//     new winston.transports.File({ filename: 'error.log', level: 'error' }),
+//     new winston.transports.File({ filename: 'combined.log' }),
+//   ],
+// });  
+
+// // if (process.env.NODE_ENV !== 'production') {
+//   logger.add(new winston.transports.Console({
+//     format: winston.format.simple(),
+//   }));
+// // }
+
+// logger.log('info', 'test message %s', 'my string');
