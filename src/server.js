@@ -33,7 +33,7 @@ require("./passport")(passport);
 // app.use(express.static(__dirname + '/public'));
 // app.use(multer({ dest: './uploads/'}));
 
-// router
+// router 
 const userRouter = require("./Api/v1/routers/userRouter");
 const postRouter = require("./Api/v1/routers/postRouter");
 const categoryRouter = require("./Api/v1/routers/categoryRouter");
