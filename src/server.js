@@ -1,14 +1,17 @@
+// NodeJs Module
 const express = require("express");
 const winston = require("winston");
 const fs = require('fs')
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
-var passport = require("passport");
+const passport = require("passport");
 const path = require("path");
 const multer = require('multer');
+
+// local file 
+const database = require('./Config/DatabaseConfig')
 const logger = require('./Config/Logger.ts'); 
 
 // for dot env  
@@ -61,15 +64,10 @@ app.use("/api/post/single-post/", commentRouter);
 
 const PORT = process.env.PORT || 5000; 
 
-app.listen(PORT, () => {
-  mongoose.connect(
-    `mongodb+srv://44447770:44447770@cluster0.ops0t.mongodb.net/blog`,
-    { useNewUrlParser: true, useUnifiedTopology: true },
-    () => {
-      console.log("database connected");
-    }
-  );
-});
+
+
+
+app.listen(PORT,  database.liveData() );
 
 
 module.exports = app

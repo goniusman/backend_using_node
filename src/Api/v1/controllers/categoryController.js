@@ -1,4 +1,5 @@
 // const { findById } = require('../model/cat')
+const redisclient = require("../utils/cache");
 const Category = require("../models/Category");
 const { serverError, resourceError } = require("../utils/error");
 const categoryValidator = require("../validator/categoryValidator");
@@ -32,17 +33,39 @@ module.exports = {
   },
 
   getAll(req, res) {
-    Category.find()
-      .then((cats) => {
-        if (cats.length === 0) {
-          return res.status(200).json({
-            message: "No Cat Found",
+
+    redisclient().get("cat", async (err, jobs) => {
+      if (err) throw err;
+
+      if (jobs) {
+
+          res.status(200).send({
+              jobs: JSON.parse(jobs),
+              message: "data retrieved from the cache"
           });
-        } else {
-          return res.status(200).json(cats);
-        }
-      })
-      .catch((error) => serverError(res, error));
+
+      }else {
+
+        Category.find()
+          .then((cats) => {
+            if (cats.length === 0) {
+              return res.status(200).json({
+                message: "No Cat Found",
+              });
+            } else {
+              console.log('from database')
+              redisclient().setex("cat", 600, JSON.stringify(cats));
+              return res.json({ success: true, data: cats });
+            
+            } 
+          })
+          .catch((error) => serverError(res, error));
+
+      }
+
+    });
+
+
   },
 
   getSingleCategory(req, res) {

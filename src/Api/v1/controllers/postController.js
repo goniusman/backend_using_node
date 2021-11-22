@@ -1,11 +1,16 @@
-const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
+const multer = require("multer");
+
+const redisclient = require("../utils/cache");
 const Post = require("../models/Post");
 // const nodemailer = require("nodemailer")
 const { serverError, resourceError } = require("../utils/error");
 const postValidator = require("../validator/postValidator");
 // const winston = require('../../../log');
+
+
+
 
 module.exports = {
   
@@ -83,40 +88,82 @@ module.exports = {
 
   getAll(req, res) {
     // console.log('test')
-    winston.info('I am here this is your point post file\n')
-    Post.find()
-      // .limit(2)
-      .then((posts) => {
-  
-        if (posts.length === 0) {
-          return res.status(200).json({
-            message: "No Post Found",
+    // winston.info('I am here this is your point post file\n')
+    redisclient.get("posts", async (err, jobs) => {
+      if (err) throw err;
+
+      if (jobs) {
+
+          res.status(200).send({
+              jobs: JSON.parse(jobs),
+              message: "data retrieved from the cache"
           });
-        } else {
-          // delete posts.description;
-          const { description, image } = posts;
-       
-          // return res.status(200).json(posts);
-         
-          return res.json({ success: true, data: posts });
-        }
-      })
-      .catch((error) => serverError(res, error));
+      }else {
+
+          Post.find()
+          // .limit(2)
+          .then((posts) => {
+      
+            if (posts.length === 0) {
+    
+              return res.status(200).json({
+                message: "No Post Found",
+              });
+
+            } else {
+
+              // delete posts.description;
+              const { description, image } = posts;
+           
+              // return res.status(200).json(posts);
+              redisclient.setex("posts", 600, JSON.stringify(posts));
+        
+              return res.json({ success: true, data: posts });
+
+            }
+          })
+          .catch((error) => serverError(res, error));
+
+      }
+    });
+
+
   },
 
   getSinglePost(req, res) {
     let { id } = req.params;
-    Post.findById(id)
-      .then((post) => {
-        if (!post) {
-          return res.status(200).json({
-            message: "No post Found",
+    // console.log('i am single')
+    redisclient().get(`post_${id}`, async (err, jobs) => {
+      if (err) throw err;
+
+      if (jobs) {
+
+          res.status(200).send({
+              jobs: JSON.parse(jobs),
+              message: "data retrieved from the cache"
           });
-        } else {
-         return res.json({ success: true, data: post });
-        } 
-      })
-      .catch((error) => serverError(res, error));
+
+      }else {
+
+    
+        Post.findById(id)
+          .then((post) => {
+            if (!post) {
+              return res.status(200).json({
+                message: "No post Found",
+              });
+            } else {
+
+                redisclient().setex(`post_${id}`, 600, JSON.stringify(post));
+                return res.json({ success: true, data: post });
+   
+            } 
+          })
+          .catch((error) => serverError(res, error));
+        }
+
+    });
+
   },
 
   update(req, res) {
