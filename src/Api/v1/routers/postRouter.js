@@ -17,7 +17,7 @@ const {
 
 
 
-router.post("/", create);
+router.post("/", create); 
 router.get("/", getAll);
 router.get('/:id', getSinglePost);
 router.put("/:id", update);
