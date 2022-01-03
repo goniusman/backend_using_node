@@ -86,10 +86,10 @@ module.exports = {
     }
   }, 
 
-  getAll(req, res) {
+  async getAll(req, res) {
     // console.log('test')
     // winston.info('I am here this is your point post file\n')
-    redisclient.get("posts", async (err, jobs) => {
+    redisclient().get("posts", async (err, jobs) => {
       if (err) throw err;
 
       if (jobs) {
@@ -98,9 +98,10 @@ module.exports = {
               jobs: JSON.parse(jobs),
               message: "data retrieved from the cache"
           });
+
       }else {
 
-          Post.find()
+          await Post.find()
           // .limit(2)
           .then((posts) => {
       

@@ -247,8 +247,8 @@ module.exports = {
     // Generate Token and Response Back
   },
 
-  allUser(req, res) {
-    User.find()
+  async forgotPasswordallUser(req, res) {
+    await User.find()
       .then((users) => { 
         console.log(users) 
         if(!users){
