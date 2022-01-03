@@ -61,7 +61,7 @@ router.post("/register", validateUserSignUp, userVlidation, register);
 // Login Route
 router.post("/login", validateUserSignIn, userVlidation, login);
 // all user route
-router.get("/all", isAuth,   allUser);
+// router.get("/all", allUser);
 router.post("/verify-email",  verifyEmail);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", isResetTokenValid, resetPassword);

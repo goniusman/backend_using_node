@@ -1,8 +1,0 @@
-::1 - - [21/Nov/2021:05:41:06 +0000] "GET / HTTP/1.1" 200 31 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-::1 - - [21/Nov/2021:05:41:07 +0000] "GET /favicon.ico HTTP/1.1" 404 150 "http://localhost:5000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-[0mGET / [36m304[0m 4.942 ms - -[0m
-GET / 304 - - 4.645 ms
-::1 - - [21/Nov/2021:05:42:44 +0000] "GET / HTTP/1.1" 304 -
-::1 - GET / HTTP/1.1 304 - - 4.927 ms
-::1 - GET / HTTP/1.1 304 - - 4.765 ms
-::1 - - [21/Nov/2021:05:48:41 +0000] "GET / HTTP/1.1" 304 -
