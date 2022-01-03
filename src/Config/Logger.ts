@@ -40,7 +40,8 @@ if (process.env.Logging === 'off') {
     transports: [
       new transports.File(options.file),
     ],
-    exitOnError: false, // do not exit on handled exceptions
+    exitOnError: false, // do not exit on handled exceptions,
+    meta: false
   });
 } else { 
   logger = createLogger({
@@ -49,6 +50,7 @@ if (process.env.Logging === 'off') {
       new transports.Console(options.console),
     ],
     exitOnError: false, // do not exit on handled exceptions
+    meta: false
   });
 }
 

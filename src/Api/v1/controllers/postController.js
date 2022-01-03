@@ -89,7 +89,7 @@ module.exports = {
   getAll(req, res) {
     // console.log('test')
     // winston.info('I am here this is your point post file\n')
-    redisclient.get("posts", async (err, jobs) => {
+    redisclient().get("posts", async (err, jobs) => {
       if (err) throw err;
 
       if (jobs) {
@@ -116,7 +116,7 @@ module.exports = {
               const { description, image } = posts;
            
               // return res.status(200).json(posts);
-              redisclient.setex("posts", 600, JSON.stringify(posts));
+              redisclient().setex("posts", 600, JSON.stringify(posts));
         
               return res.json({ success: true, data: posts });
 
