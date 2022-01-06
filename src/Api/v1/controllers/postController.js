@@ -117,7 +117,7 @@ module.exports = {
               const { description, image } = posts;
            
               // return res.status(200).json(posts);
-              redisclient.setex("posts", 600, JSON.stringify(posts));
+              redisclient().setex("posts", 600, JSON.stringify(posts));
         
               return res.json({ success: true, data: posts });
 
