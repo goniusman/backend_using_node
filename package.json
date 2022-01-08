@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "test": "jest --config=jest.config.js --watch --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
@@ -50,9 +51,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
     "babel-cli": "^6.26.0",
     "babel-jest": "^27.4.5",
-    "babel-preset-env": "^1.7.0",
     "jest": "^27.4.5",
     "nodemon": "^2.0.12",
     "superagent": "^6.1.0",

@@ -1,15 +1,15 @@
 const router = require("express").Router();
 const path = require("path");
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
 const {
   validateUserSignUp,
   userVlidation,
   validateUserSignIn,
-} = require('../middlewares/validation/user');
+} = require("../middlewares/validation/user");
 
-const { isAuth } = require('../middlewares/auth');
-const { isResetTokenValid } = require('../middlewares/user');
+const { isAuth } = require("../middlewares/auth");
+const { isResetTokenValid } = require("../middlewares/user");
 
 const {
   login,
@@ -19,15 +19,15 @@ const {
   logOut,
   verifyEmail,
   forgotPassword,
-  resetPassword
+  resetPassword,
 } = require("../controllers/userController");
 
-const multer = require('multer');
+const multer = require("multer");
 
 const storage = multer.diskStorage({});
 
 // const storage = multer.diskStorage({
-  
+
 //   destination: function (request, file, callback) {
 //     // const dir =  "./uploads";
 //     const root = path.resolve('./')
@@ -40,35 +40,38 @@ const storage = multer.diskStorage({});
 //   }
 // });
 
-
-
-
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image')) {
+  if (file.mimetype.startsWith("image")) {
     // console.log(file)
     cb(null, true);
   } else {
-    cb('invalid image file!', false);
+    cb("invalid image file!", false);
   }
 };
 
-
-
-const upload = multer({ storage, fileFilter, limits: { fieldSize: 10 * 1024 * 1024 } });
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fieldSize: 10 * 1024 * 1024 },
+});
 
 // Registration Route
-router.post("/register", validateUserSignUp, userVlidation, register);
-// Login Route
-router.post("/login", validateUserSignIn, userVlidation, login);
+// router.post("/register", validateUserSignUp, userVlidation, register);
+// // Login Route
+// router.post("/login", validateUserSignIn, userVlidation, login);
 // all user route
-// router.get("/all", allUser);
-router.post("/verify-email",  verifyEmail);
+router.get("/all", allUser);
+router.post("/verify-email", verifyEmail);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", isResetTokenValid, resetPassword);
 
 // upload images
-router.post("/profile-picture", isAuth,  upload.single('feturedimage'),  imageUpload);
-
+router.post(
+  "/profile-picture",
+  isAuth,
+  upload.single("feturedimage"),
+  imageUpload
+);
 
 // router.post('/profile-picture', upload.single('featuredImage') function (req, res) {
 
@@ -76,7 +79,6 @@ router.post("/profile-picture", isAuth,  upload.single('feturedimage'),  imageUp
 //   console.log(req.file) // form files
 //   res.status(204).end()
 // })
-
 
 // logout
 router.post("/logout", isAuth, logOut);
