@@ -8,7 +8,7 @@ module.exports = {
   },
 
   resourceError(res, message) {
-    return res.json({ success: false, message: message });
+    return res.status(400).json({ success: false, message: message });
     // return res.status(400).json({
     //   message,
     // });

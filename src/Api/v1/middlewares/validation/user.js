@@ -45,9 +45,8 @@ exports.validateUserSignUp = [
 exports.userVlidation = (req, res, next) => {
   const result = validationResult(req).array();
   if (!result.length) return next();
-
   const error = result[0].msg;
-  res.json({ success: false, message: error });
+  return res.status(400).json({ success: false, message: error });
 };
 
 exports.validateUserSignIn = [

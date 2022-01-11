@@ -108,11 +108,6 @@ module.exports = {
 
               // return res.status(200).json(posts);
               redisclient().setex("posts", 600, JSON.stringify(posts));
-<<<<<<< HEAD
-=======
-        
-              return res.json({ success: true, data: posts });
->>>>>>> dc9d7717921e8e860836e0f03958d232671f74cf
 
               return res.json({ success: true, data: posts });
             }

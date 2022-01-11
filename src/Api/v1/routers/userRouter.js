@@ -55,23 +55,24 @@ const upload = multer({
   limits: { fieldSize: 10 * 1024 * 1024 },
 });
 
-// Registration Route
-// router.post("/register", validateUserSignUp, userVlidation, register);
+
+router.get("/all", allUser);
+router.post("/register", validateUserSignUp, userVlidation, register);
+router.post("/verify-email", verifyEmail);
+
 // // Login Route
 // router.post("/login", validateUserSignIn, userVlidation, login);
 // all user route
-router.get("/all", allUser);
-router.post("/verify-email", verifyEmail);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password", isResetTokenValid, resetPassword);
+// router.post("/forgot-password", forgotPassword);
+// router.post("/reset-password", isResetTokenValid, resetPassword);
 
 // upload images
-router.post(
-  "/profile-picture",
-  isAuth,
-  upload.single("feturedimage"),
-  imageUpload
-);
+// router.post(
+//   "/profile-picture",
+//   isAuth,
+//   upload.single("feturedimage"),
+//   imageUpload
+// );
 
 // router.post('/profile-picture', upload.single('featuredImage') function (req, res) {
 
@@ -81,6 +82,6 @@ router.post(
 // })
 
 // logout
-router.post("/logout", isAuth, logOut);
+// router.post("/logout", isAuth, logOut);
 
 module.exports = router;

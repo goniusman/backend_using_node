@@ -1,8 +1,9 @@
 const request = require("supertest");
 const app = require("../src/app");
 
-// jest.mock("../src/Api/v1/controllers/userController");
-// jest.setTimeout(30000);
+jest.mock("../src/Api/v1/services/userServices");
+
+jest.setTimeout(200000);
 
 describe("UserController Test Suite", () => {
   test("get should return an array of users", async () => {
@@ -12,7 +13,28 @@ describe("UserController Test Suite", () => {
     let users = response.body.users;
     expect(users.length).toBeGreaterThan(0);
     // expect(users[0].id).toBe("1");
-  }, 90000);
+  }); 
+
+
+   test("post should return saved id", async () => {
+    let user = {
+      _id: "0342098",
+      name: "another",
+      email: "another@gmail.com",
+      password: "2424",
+      username: "goniusman",
+      role: "admin",
+    };
+    
+    let response = await request(app).post("/users").send(user);
+    expect(response.statusCode).toBe(201);
+    let body = response.body;
+    expect(body.length).toBe(24);
+    let savedUserResponse = await request(app).get("/users/" + body);
+    let savedUser = savedUserResponse.body;
+    expect(savedUser.createdAt).not.toBe(null);
+    expect(savedUser.username).toBe(user.username);
+  });
 
   ///////////// fauzul karim task /////////////////
 
@@ -23,6 +45,8 @@ describe("UserController Test Suite", () => {
   //   expect(users.length).toBeGreaterThan(0);
   //   expect(users[0].id).toBe("1");
   // });
+
+
   // test("post should return saved id", async () => {
   //   let user = { username: "test002" };
   //   let response = await request(app).post("/users").send(user);
@@ -34,6 +58,7 @@ describe("UserController Test Suite", () => {
   //   expect(savedUser.createdAt).not.toBe(null);
   //   expect(savedUser.username).toBe(user.username);
   // });
+
   // test("get by id should return an user", async () => {
   //   let response = await request(app).get("/users/1");
   //   let user = response.body;
