@@ -5,13 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Program",
       "type": "pwa-node",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}\\src\\server.js"
+    },
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeArgs": [
+        "--inspect-brk",
+        "${workspaceRoot}/node_modules/jest/bin/jest.js",
+        "--runInBand"
       ],
-      "program": "${workspaceFolder}\\src\\Api\\v1\\server.js"
+      "skipFiles": [
+        "${workspaceRoot}/<node_internals>/**",
+        "${workspaceRoot}/node_modules/**"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "port": 9229
     }
   ]
 }
