@@ -26,14 +26,14 @@ describe("UserController Test Suite", () => {
       role: "admin",
     };
     
-    let response = await request(app).post("/users").send(user);
+    let response = await request(app).post("/api/user/register").send(user);
     expect(response.statusCode).toBe(201);
     let body = response.body;
     expect(body.length).toBe(24);
-    let savedUserResponse = await request(app).get("/users/" + body);
-    let savedUser = savedUserResponse.body;
-    expect(savedUser.createdAt).not.toBe(null);
-    expect(savedUser.username).toBe(user.username);
+    // let savedUserResponse = await request(app).get("/api/user/" + body);
+    // let savedUser = savedUserResponse.body;
+    expect(response.createdAt).not.toBe(null);
+    expect(response.username).toBe(user.username);
   });
 
   ///////////// fauzul karim task /////////////////

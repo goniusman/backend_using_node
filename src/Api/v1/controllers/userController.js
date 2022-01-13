@@ -119,7 +119,7 @@ module.exports = {
 
     let validate = loginValidator({ email, password });
 
-    if (!validate.isValid) return res.status(400)json({success: false, message: "Empty Value", data: validate.error});
+    if (!validate.isValid) return res.status(400).json({success: false, message: "Empty Value", data: validate.error});
     
     return await login(res, email, password)
 

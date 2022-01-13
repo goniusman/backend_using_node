@@ -201,7 +201,7 @@ module.exports = {
       .then( async (user) => {
         if (!user) return resourceError(res, "User Not Found");
         
-        bcrypt.compare(password, user.password, (err, result) => {
+        bcrypt.compare(password, user.password, async (err, result) => {
           if (err) return serverError(res, err);
 
           if (!result) return resourceError(res, "Password Doesn't Match");

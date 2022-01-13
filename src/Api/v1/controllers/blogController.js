@@ -21,7 +21,7 @@ const {
 
 
 module.exports = {
-  create(req, res) {
+  async create(req, res) {
     let {
       title,
       description,
@@ -122,12 +122,12 @@ module.exports = {
     return remove(res,id);
   },
 
-  toogleUpdate(req, res) {
+  async toogleUpdate(req, res) {
     let { id } = req.params;
     return await toogleUpdate(res,id);
   },
 
-  imageUpload(req, res) {
+  async imageUpload(req, res) {
     const { id } = req.params;
     if (req.files === null) {
       return res.status(400).json({ msg: "No file uploaded" });
