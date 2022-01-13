@@ -24,8 +24,7 @@ router.put("/:id", update);
 router.post("/search/:query", searchQuery);
 router.put("/toggle/:id", toogleUpdate);
 router.delete("/:id", remove);
-
-// router.post('/upload/:id', imageUpload)
+router.post('/upload/:id', imageUpload)
 // router.put('/issuetoggle/:id', updateSolved)
 
 module.exports = router;

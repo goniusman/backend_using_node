@@ -14,23 +14,7 @@ module.exports = {
     if (!validate.isValid) {
       return res.status(400).json(validate.error);
     } else {
-      let comments = new Comment({ name, email, website, comment, postId: id });
-      comments
-        .save()
-        .then((comment) => {
-          Post.findById(id)
-            .then((post) => {
-              post.comments.unshift(comment._id);
-              post
-                .save()
-                .then((post) => {
-                  return res.status(201).json({success: true, message: "okay"});
-                })
-                .catch((error) => serverError(res, error));
-            })
-            .catch((error) => serverError(res, error));
-        })
-        .catch((error) => serverError(res, error));
+     return create(res, name, email, website, comment,  id )
     }
   },
 
@@ -38,58 +22,22 @@ module.exports = {
     // for specific post
     let _id = req.params.id;
 
-    Comment.find({ postId: _id })
-      .then((comments) => {
-        if (comments.length === 0) {
-          return res.status(200).json([]);
-        } else {
-          return res.status(200).json(comments);
-        }
-      })
-      .catch((error) => serverError(res, error));
+    return getAll(res,_id)
   },
 
   getSingleComment(req, res) {
     let { commentId } = req.params;
-    Comment.findById(commentId)
-      .then((comment) => {
-        if (!comment) {
-          res.status(200).json({
-            message: "No Comment Found",
-          });
-        } else {
-          res.status(200).json(comment);
-        }
-      })
-      .catch((error) => serverError(res, error));
+   return getSingleComment(res,commentId)
   },
 
   update(req, res) {
     let { commentId } = req.params;
-    Comment.findOneAndUpdate(
-      { _id: commentId },
-      { $set: req.body },
-      { new: true }
-    )
-      .then((result) => {
-        res.status(200).json({
-          message: "Updated Successfully",
-          // comment: result
-        });
-      })
-      .catch((error) => serverError(res, error));
+   return update(res, commentId)
   },
 
   remove(req, res) {
     let { commentId } = req.params;
-    Comment.findOneAndDelete({ _id: commentId })
-      .then((result) => {
-        res.status(200).json({
-          message: "Deleted Successfully",
-          // ...result._doc
-        });
-      })
-      .catch((error) => serverError(res, error));
+    return remove(res, commentId)
   },
 
 };
