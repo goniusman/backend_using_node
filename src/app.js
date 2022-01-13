@@ -42,7 +42,7 @@ require("./passport")(passport);
 
 // router
 const userRouter = require("./Api/v1/routers/userRouter");
-const postRouter = require("./Api/v1/routers/postRouter");
+const blogRouter = require("./Api/v1/routers/blogRouter");
 const categoryRouter = require("./Api/v1/routers/categoryRouter");
 const commentRouter = require("./Api/v1/routers/commentRouter");
 // const swaggerRouter = require("./Api/v1/routers/swagger");
@@ -51,7 +51,7 @@ app.use(infoLogger());
 // app.use(errorLogger())
 
 app.use("/api/user/", userRouter);
-app.use("/api/post/", postRouter);
+app.use("/api/blog/", blogRouter);
 app.use("/api/category/", categoryRouter);
 app.use("/api/post/single-post/", commentRouter);
 // app.use("/api-docs", swaggerRouter);

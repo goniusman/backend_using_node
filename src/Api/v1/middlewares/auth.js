@@ -2,34 +2,34 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.isAuth = async (req, res, next) => {
-  // console.log(req.headers.authorization)
+
   if (req.headers && req.headers.authorization) {
     const token = req.headers.authorization.split(' ')[1];
-// console.log(token)
+
     try {
       const decode = jwt.verify(token, 'SECRET');
-      // console.log(decode)
+
       const user = await User.findById(decode._id);
       if (!user) {
-        return res.json({ success: false, message: 'unauthorized access!' });
+        return res.status(400).json({ success: false, message: 'unauthorized access!' });
       }
-
-      req.user = user;
+      const {password, ...newuser} = user._doc
+      req.user = newuser;
       next();
     } catch (error) {
       if (error.name === 'JsonWebTokenError') {
-        return res.json({ success: false, message: 'unauthorized access!' });
+        return res.status(400).json({ success: false, message: 'unauthorized access!' });
       }
       if (error.name === 'TokenExpiredError') {
-        return res.json({
+        return res.status(400).json({
           success: false,
           message: 'sesson expired try sign in!',
         });
       }
 
-     return res.res.json({ success: false, message: 'Internal server error!' });
+     return res.status(400).json({ success: false, message: 'Internal server error!' });
     }
   } else {
-    return res.json({ success: false, message: 'unauthorized access!' });
+    return res.status(400).json({ success: false, message: 'unauthorized access!' });
   }
 };

@@ -161,7 +161,7 @@ module.exports = {
       to: user.email,
       subject: "Forgot Password",
       html: generatePasswordResetTemplate(
-        `http://localhost:5000/reset-password?token=${randomBytes}&id=${user._id}`
+        `http://localhost:5000/api/user/reset-password?token=${randomBytes}&id=${user._id}`
       ),
     });
 
@@ -174,7 +174,7 @@ module.exports = {
     if (!user) return resourceError(res, "User not found");
 
     const isSamePassword = await user.comparePassword(password);
-    if (isSamePassword) return resourceError(res, "new password must be defferent");
+    if (isSamePassword) return resourceError(res, "new password must be defferent from old on");
 
     user.password = password.trim();
     await user.save();
@@ -198,10 +198,10 @@ module.exports = {
   async login( res, email, password) {
 
    await User.findOne({ email })
-      .then( async (user) => {
+      .then(  (user) => {
         if (!user) return resourceError(res, "User Not Found");
         
-        bcrypt.compare(password, user.password, (err, result) => {
+        bcrypt.compare(password, user.password, async (err, result) => {
           if (err) return serverError(res, err);
 
           if (!result) return resourceError(res, "Password Doesn't Match");
@@ -237,25 +237,18 @@ module.exports = {
             })
             .catch((error) => serverError(res, error));
 
-          delete user.password;
-          return res.status(200).json({ success: true, user: user, token });
+            const {password, ...userwithoutpass} = user._doc;
+
+        
+
+          return res.status(200).json({ success: true, user: userwithoutpass, token });
         
         });
       })
       .catch((error) => serverError(res, error));
   },
 
-  async forgotPasswordallUser(req, res) {
-    await User.find()
-      .then((users) => {
-        console.log(users);
-        if (!users) {
-          resourceError(res, "There is no users");
-        }
-        return res.status(200).json(users);
-      })
-      .catch((error) => serverError(res, error));
-  },
+
 
   async imageUpload(res, user, filePath) {
 
@@ -287,10 +280,13 @@ module.exports = {
 
   },
 
-  logOut( res, tokens, id) {
+   logOut( res, tokens, id, token) {
       const newTokens = tokens.filter((t) => t.token !== token);
-      User.findByIdAndUpdate(id, { tokens: newTokens });
-      return res.status(200).json({ success: true, message: "Sign out successfully!" });
+       User.findByIdAndUpdate(id, { tokens: newTokens })
+          .then(r => {
+            return res.status(200).json({ success: true, message: "Sign out successfully!" });
+          })
+          .catch((error) => serverError(res, error));
   },
 
 };

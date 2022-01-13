@@ -9,12 +9,10 @@ const {
   remove,
   toogleUpdate,
   searchQuery,
-} = require("../controllers/postController");
+} = require("../controllers/blogController");
 
 // for authenticate user
 // const authenticate = require('../authenticate')
-
-
 
 
 router.post("/", create); 

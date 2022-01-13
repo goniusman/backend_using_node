@@ -119,41 +119,29 @@ module.exports = {
 
     let validate = loginValidator({ email, password });
 
-    if (!validate.isValid) return res.status(400)json({success: false, message: "Empty Value", data: validate.error});
+    if (!validate.isValid) return res.status(400).json({success: false, message: "Empty Value", data: validate.error});
     
     return await login(res, email, password)
 
   },
 
-  async forgotPasswordallUser(req, res) {
-    await User.find()
-      .then((users) => {
-        if (!users) {
-          resourceError(res, "There is no users");
-        }
-        return res.status(200).json(users);
-      })
-      .catch((error) => serverError(res, error));
-  },
 
   async imageUpload(req, res) {
     const { user } = req;
     if (!user) return res.status(401).json({ success: false, message: "unauthorized access!" });
+    // if (typeof req.file.path  == "undefined") {
+    //     return res.status(400).json({success: "false", file: "No file uploaded" });
+    // }
     const filePath = req.file.path
-
-   return await imageUpload(res, user, filePath)
+    return await imageUpload(res, user, filePath)
   },
 
   async logOut(req, res) {
-    if (req.headers && req.headers.authorization) {
-      const token = req.headers.authorization.split(" ")[1];
-
-      if (!token) return res.status(401).json({ success: false,message: "Authorization fail! There is no Authorization token"});
-      
-      const tokens = req.user.tokens;
-      const id = req.user._id
-     return await logOut(res, tokens, id);
-    }
+    const token = req.headers && req.headers.authorization.split(' ')[1] 
+    const tokens = req.user.tokens;
+    const id = req.user._id
+    return await logOut(res, tokens, id, token);
+    
   },
 
 };
