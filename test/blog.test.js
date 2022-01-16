@@ -1,11 +1,12 @@
 const request = require("supertest");
 const app = require("../src/app");
 
-jest.mock("../src/Api/v1/services/userServices");
+jest.mock("../src/Api/v1/services/blogServices");
 
 jest.setTimeout(200000);
 
 describe("UserController Test Suite", () => {
+
   test("get should return an array of users", async () => {
     let response = await request(app).get("/api/user/all");
     // console.log(response);
@@ -16,7 +17,7 @@ describe("UserController Test Suite", () => {
   }); 
 
 
-   test("post should return saved user", async () => {
+  test("post should return saved user", async () => {
    
     let user = {
       _id: "0342098",

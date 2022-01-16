@@ -17,17 +17,18 @@ const getMessage = (req, res) => {
 
 const mongoErrorTransport = (uri) => new winston.transports.MongoDB({
   db: uri,
-  metaKey: 'meta'
+  metaKey: 'meta',
+  collection: 'logs' 
 });
 
 
-// const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
-// const elasticsearchOptions = {
-//     level: 'info',
-//     clientOpts: { node: `http://${HOST}:9200` },
-//     indexPrefix: 'log-parcelkoi'
-// };
-// const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
+const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
+const elasticsearchOptions = {
+    level: 'info',
+    clientOpts: { node: `http://${HOST}:9220` },
+    indexPrefix: 'log-BackendNode'
+};
+const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
 
 
 
@@ -50,8 +51,8 @@ const errTransport = new (winston.transports.DailyRotateFile)(
 module.exports.infoLogger = () => expressWinston.logger({
   transports: [
       // new winston.transports.Console(),
-      // esTransport
-      infoTransport
+      // infoTransport,
+      esTransport
   ],
   format: winston.format.combine(winston.format.colorize(), winston.format.json()),
   meta: false, 
@@ -59,15 +60,16 @@ module.exports.infoLogger = () => expressWinston.logger({
 });
 
 
-module.exports.errorLogger = (uri) => expressWinston.errorLogger({
+module.exports.errorLogger = (uri, message="Error Not Defined") => expressWinston.logger({
   transports: [
       // new winston.transports.Console(),
       mongoErrorTransport(uri),
-      errTransport
+      // errTransport,
+      esTransport
   ],
   format: winston.format.combine(winston.format.colorize(), winston.format.json()),
   meta: true,
-  msg: '{ "correlationId": "{{req.headers["x-correlation-id"]}}", "error": "{{err.message}}" }'
+  msg: '{ "correlationId": "{{req.headers["x-correlation-id"]}}", "error": "{{message}}" }'
 });
 
 

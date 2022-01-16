@@ -7,7 +7,8 @@ const mongoose = require("mongoose");
 
 module.exports = {
 
-  uri: `mongodb+srv://44447770:44447770@cluster0.ops0t.mongodb.net/blog`,
+  liveUri: `mongodb+srv://44447770:44447770@cluster0.ops0t.mongodb.net/blog`, 
+  localUri: `mongodb://localhost:27017/blog`, 
   liveData(){
     const uri = `mongodb+srv://44447770:44447770@cluster0.ops0t.mongodb.net/blog`;
     const options = { useNewUrlParser: true, useUnifiedTopology: true };

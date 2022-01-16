@@ -9,7 +9,8 @@ const {
   remove,
   toogleUpdate,
   searchQuery,
-} = require("../controllers/postController");
+  imageUpload
+} = require("../controllers/blogController");
 
 // for authenticate user
 // const authenticate = require('../authenticate')

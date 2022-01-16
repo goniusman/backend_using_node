@@ -1,2 +1,1 @@
-# it's very simple mern stack project for blog website. not completed yet it's on progress....
-# Project deployed on heroku platform. you can visit there. https://mern-stack-blogs.herokuapp.com/blog
+# It's very basic nodejs api based project.
