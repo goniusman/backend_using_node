@@ -99,20 +99,12 @@ module.exports = {
               // return res.status(200).json(posts);
               redisclient().setex("posts", 600, JSON.stringify(posts));
 
-<<<<<<< HEAD
-             res.status(200).json({ success: true, data: posts });
-          }
-        })
-        .catch((error) => serverError(res, error));
-   
-=======
               return res.json({ success: true, data: posts });
             }
           })
           .catch((error) => serverError(res, error));
  
   
->>>>>>> bb27d22e8326cc0653531fd4f1c39cbd9ffa25fa
   },
 
   getSinglePost(req, res) {
