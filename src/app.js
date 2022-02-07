@@ -1,3 +1,4 @@
+require("dotenv").config();
 // NodeJs Module
 const express = require("express");
 const winston = require("winston");
@@ -11,15 +12,16 @@ const path = require("path");
 const multer = require("multer");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
-
-const { infoLogger } = require("./logger");
+const { infoLogger, errorLogger} = require("./logger");
+require("./passport")(passport);
+const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
+const {handleRequest,handleError } = require("./Api/v1/utils/error")
 
 // local file
 
 // const logger = require('./Config/Logger.ts');
 
 // for dot env
-require("dotenv").config();
 const app = express();
 // cross origin platform
 app.use(cors());
@@ -27,7 +29,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
-require("./passport")(passport);
+app.use(handleRequest);
 
 // // default morgan packages without winston.
 // var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
@@ -48,7 +50,7 @@ const commentRouter = require("./Api/v1/routers/commentRouter");
 // const swaggerRouter = require("./Api/v1/routers/swagger");
 
 app.use(infoLogger());
-// app.use(errorLogger())
+app.use(errorLogger(localUri))
 
 app.use("/api/user/", userRouter);
 app.use("/api/blog/", blogRouter);
@@ -66,6 +68,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // }
 
 // app.listen(PORT,  database.liveData() );
+app.use(handleError)
+
 
 module.exports = app;
 

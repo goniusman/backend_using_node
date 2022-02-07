@@ -83,18 +83,8 @@ module.exports = {
     }
   },
 
-  async getAll(req, res) {
-    // console.log('test')
-    // winston.info('I am here this is your point post file\n')
-    redisclient().get("posts", async (err, jobs) => {
-      if (err) throw err;
-
-      if (jobs) {
-        res.status(200).send({
-          jobs: JSON.parse(jobs),
-          message: "data retrieved from the cache",
-        });
-      } else {
+  async getAll( res) {
+ 
         await Post.find()
           // .limit(2)
           .then((posts) => {
@@ -113,8 +103,8 @@ module.exports = {
             }
           })
           .catch((error) => serverError(res, error));
-      }
-    });
+ 
+  
   },
 
   getSinglePost(req, res) {

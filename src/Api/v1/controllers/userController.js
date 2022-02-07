@@ -81,10 +81,8 @@ module.exports = {
       });
     } else {
 
-
       return await register({ name, email, role, username, password, confirmPassword }, res)
 
-     
     }
 
   },

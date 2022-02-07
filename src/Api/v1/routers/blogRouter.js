@@ -9,6 +9,7 @@ const {
   remove,
   toogleUpdate,
   searchQuery,
+  imageUpload
 } = require("../controllers/blogController");
 
 // for authenticate user

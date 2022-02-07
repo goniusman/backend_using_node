@@ -1,54 +1,41 @@
 version: "3.8"
-service:
+services:
   mongo:
-    image: mongo 
+    image: mongo
     container_name: mongo
-    ports: 
+    ports:
       - "27017:27017"
-    networks: 
-      - mynet 
-    valumes: 
-      - mongo_data:/data/db 
-  elasticsearch:
-    image: elasticsearch:7.9.2
-    container_name: elasticsearch
-    environment: 
-      -discovery.type=single-node 
-    ports: 
-        - "9200:9200"
-    networks: 
-      - mynet 
+    networks:
+      - customnet
     volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-  kibana:
-    image: kibana:7.9.2 
-    container_name: kibana
-    ports: 
-      - "5601:5601"
-    networks: 
-      - mynet
-    volumes: 
-      - kibana_data:/usr/share/kibana/data
-  backendUsingNode:
-    image: kibana:7.9.2 
-    container_name: backendUsingNode
-    ports: 
+      - mongo:/db
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - customnet
+    volumes:
+      - redis:/redis
+  backendwnode:
+    image: backendnode
+    container_name: backendnode
+    ports:
       - "5000:5000"
-    networks: 
-      - mynet
-    volumes: 
-      - kibana_data:/usr/share/backendUsingNode/data
-    environment:
-      - DEBUG: 1
-      - MONGODb_HOST=mongo 
-      - ELASTICSEARCH_HOST=elasticsearch
-    depends_on: 
-     - mongo
-     - elasticsearch
-     - kibana
-        
-         
-
-
-
-
+    networks:
+      - customnet
+    volumes:
+      - myvol:/app
+      - MONGODB_local=mongo
+      - REDIS_host=redis
+    depends_on:
+      - mongo
+      - redis
+networks:
+  customnet:
+    driver: bridge
+volumes:
+  mongo:
+  redis:
+  myvol:

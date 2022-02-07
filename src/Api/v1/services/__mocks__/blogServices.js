@@ -1,20 +1,24 @@
 const User = require("../../models/User");
-let users = [
+
+
+let blog = [
   {
     _id: "03423",
-    name: "osman",
-    email: "osman@gmail.com",
-    password: "2424",
-    username: "goniusman",
-    role: "admin",
+    title: "osman",
+    description: "osman@gmail.com",
+    category: "2424",
+    tag: "goniusman",
+    author: "admin",
+    isPublished: "admin",
   }, 
   {
     _id: "03424",
-    name: "anik",
-    email: "anik@gmail.com",
-    password: "24245",
-    username: "anikhasan",
-    role: "user",
+    title: "osman",
+    description: "osman@gmail.com",
+    category: "2424",
+    tag: "goniusman",
+    author: "admin",
+    isPublished: "admin",
   },
 ];
 
