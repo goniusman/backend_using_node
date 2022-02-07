@@ -53,7 +53,7 @@ app.use(infoLogger());
 
 
 app.use("/api/user/", userRouter);
-app.use("/api/post/", blogRouter);
+app.use("/api/blog/", blogRouter);
 app.use("/api/category/", categoryRouter);
 app.use("/api/post/single-post/", commentRouter);
 // app.use("/api-docs", swaggerRouter);

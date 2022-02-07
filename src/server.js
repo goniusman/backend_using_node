@@ -14,15 +14,20 @@ const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
   // infoLogger()
+<<<<<<< HEAD
   // errorLogger(liveUri)
   res.status(200).json({ "message": "Server is running" + PORT  });
+=======
+  // errorLogger(localUri)
+  res.status(200).json({ message: "Server is running" +PORT  });
+>>>>>>> bb27d22e8326cc0653531fd4f1c39cbd9ffa25fa
 });
 
 app.get('*', function(req, res){
   // errorLogger(liveUri)
   res.status(500).send('what???');
 });
-
+   
 app.listen(PORT, () => {
   localData();
   // liveData();

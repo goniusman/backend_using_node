@@ -16,8 +16,6 @@ const {
 // const authenticate = require('../authenticate')
 
 
-
-
 router.post("/", create); 
 router.get("/", getAll);
 router.get('/:id', getSinglePost);

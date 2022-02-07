@@ -5,7 +5,7 @@ const RToken = require('../models/RToken')
 const { serverError, resourceError } = require("../utils/error");
 
 exports.isResetTokenValid = async (req, res, next) => {
-  const {token, id} = req.query;
+  const {token, id} = req.params;
   if(!token || !id) return resourceError(res, "Invalid Request")
 
   if(!isValidObjectId(id)) return resourceError(res, "Invalid User")
