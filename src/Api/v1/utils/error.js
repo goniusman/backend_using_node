@@ -5,16 +5,16 @@ const { errorLogger } = require("../../../logger");
 module.exports = {
   serverError(res, error) {
     // console.log(error);
-    errorLogger(localUri, error)
-    return res.status(500).json({
-      error: error,
-      message: "Server Error Occurred",
+    // errorLogger(localUri, error)
+     res.json({
+      "error": error,
+      "message": "Server Error Occurred",
     });
   },
 
   resourceError(res, message) {
-    errorLogger(localUri, message)
-    return res.status(400).json({ success: false, message: message });
+    // errorLogger(localUri, message)
+     res.json({ "success": false, "message": message });
     // return res.status(400).json({
     //   message,
     // });

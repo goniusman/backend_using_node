@@ -22,14 +22,13 @@ const mongoErrorTransport = (uri) => new winston.transports.MongoDB({
 });
 
 
-const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
-const elasticsearchOptions = {
-    level: 'info',
-    clientOpts: { node: `http://${HOST}:9220` },
-    indexPrefix: 'log-BackendNode'
-};
-const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
-
+// const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
+// const elasticsearchOptions = {
+//     level: 'info',
+//     clientOpts: { node: `http://${HOST}:9220` },
+//     indexPrefix: 'log-BackendNode'
+// };
+// const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
 
 
 const infoTransport = new (winston.transports.DailyRotateFile)(
@@ -42,34 +41,49 @@ const infoTransport = new (winston.transports.DailyRotateFile)(
 
 const errTransport = new (winston.transports.DailyRotateFile)(
     {
-    filename: 'logs/err/log-%DATE%.log', 
-    datePattern: 'yyyy-MM-DD'
-    // datePattern: 'yyyy-MM-DD'
+      filename: 'logs/err/log-%DATE%.log', 
+      datePattern: 'yyyy-MM-DD',
+      name: 'file',
+      colorize: true, 
+      json: true,
+      maxsize: 50 * 1024 * 1024,
+      maxFiles: 10,
+      zippedArchive: true
   }
 )
 
 module.exports.infoLogger = () => expressWinston.logger({
   transports: [
       // new winston.transports.Console(),
-      // infoTransport,
-      esTransport
+      infoTransport,
+      // esTransport,
+    //   new winston.transports.Console({
+    //     json: true,
+    //     colorize: true
+    // })
   ],
   format: winston.format.combine(winston.format.colorize(), winston.format.json()),
-  meta: false, 
+  meta: true, 
   msg: getMessage 
 });
 
 
-module.exports.errorLogger = (uri, message="Error Not Defined") => expressWinston.logger({
+module.exports.errorLogger = (uri) => expressWinston.errorLogger({
   transports: [
       // new winston.transports.Console(),
       mongoErrorTransport(uri),
-      // errTransport,
-      esTransport
+      errTransport,
+      new winston.transports.Console({
+        json: true,
+        colorize: true
+      })
   ],
+  ignoreRoute: function(req, res) {
+    return true;
+  },
   format: winston.format.combine(winston.format.colorize(), winston.format.json()),
   meta: true,
-  msg: '{ "correlationId": "{{req.headers["x-correlation-id"]}}", "error": "{{message}}" }'
+  msg: '{ "correlationId": "{{req.headers["x-correlation-id"]}}", "error": "{{err}}" }'
 });
 
 

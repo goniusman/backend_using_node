@@ -3,7 +3,11 @@ const redis = require("redis")
 
 module.exports = () => {
   const redisPort = 6379
-  const client = redis.createClient(redisPort);
+  const host = process.env.REDIS_HOST || "localhost"
+  const client = redis.createClient({
+    host: host,
+    port: redisPort
+  });
 
   client.on("error", (err) => {
     console.log('You Should Run Redis Server!')

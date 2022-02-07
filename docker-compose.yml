@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - mynet
+    volumes:
+      - mongo_data:/data/db
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - mynet
+
+  backendUsingNode:
+    image: backendnode
+    container_name: backendnode
+    ports:
+      - "5000:5000"
+    networks:
+      - mynet
+    volumes:
+      - backendnode_data:/usr/share/backendnode/data
+    environment:
+      - DEBUG=1
+      - MONGODB_local=mongo
+      - REDIS_HOST=redis
+    depends_on:
+      - mongo
+      - redis
+networks:
+  mynet:
+    driver: bridge
+volumes:
+  mongo_data:
+  backendnode_data:
