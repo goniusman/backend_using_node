@@ -14,7 +14,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const { infoLogger, errorLogger} = require("./logger");
 require("./passport")(passport);
-const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
+const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const {handleRequest,handleError } = require("./Api/v1/utils/error")
 
 // local file
@@ -50,7 +50,7 @@ const commentRouter = require("./Api/v1/routers/commentRouter");
 // const swaggerRouter = require("./Api/v1/routers/swagger");
 
 app.use(infoLogger());
-app.use(errorLogger(localUri))
+
 
 app.use("/api/user/", userRouter);
 app.use("/api/blog/", blogRouter);
@@ -69,6 +69,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // app.listen(PORT,  database.liveData() );
 app.use(handleError)
+app.use(handleRequest)
+
 
 
 module.exports = app;

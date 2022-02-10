@@ -1,5 +1,5 @@
 const app = require("./app");
-const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
+const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const { errorLogger, infoLogger } = require("./logger");
 
 // console.log(app)
@@ -21,8 +21,7 @@ app.get("/", (req, res) => {
 
 app.enable('trust proxy')
 app.get('*', function(req, res){
-  errorLogger(localUri)
-  console.log('hellow from nothing NginX')
+  // errorLogger(liveUri)
   res.status(500).send('what???');
 });
    
@@ -31,9 +30,10 @@ app.listen(PORT, () => {
   localData();
   // liveData();
   // console.log(test.uri)
-  if (process.env.ENVIRONMENT != "TEST") app.use(errorLogger(localUri));
+  if ( process.env.ENVIRONMENT != "TEST" )app.use(errorLogger(liveUri));
 
-  console.log("app is running on port", PORT);
+  infoLogger()
+  console.log("app is running on port ", PORT);
 });
 
 // console.log(app)

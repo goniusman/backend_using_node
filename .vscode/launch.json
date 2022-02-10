@@ -5,10 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Docker: Attach to Node",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "address": "localhost",
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "/app",
+      "protocol": "inspector",
+      "restart": true
+   },
+    {
       "name": "Launch Program",
       "type": "pwa-node",
       "request": "launch",
-      "skipFiles": ["<node_internals>/**"],
+      "skipFiles": [
+        "${workspaceRoot}/<node_internals>/**",
+        "${workspaceRoot}/node_modules/**"
+      ],
       "program": "${workspaceFolder}\\src\\server.js"
     },
     {

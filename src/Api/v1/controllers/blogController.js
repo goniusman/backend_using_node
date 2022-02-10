@@ -7,7 +7,7 @@ const Post = require("../models/Post");
 // const nodemailer = require("nodemailer")
 const { serverError, resourceError } = require("../utils/error");
 const postValidator = require("../validator/postValidator");
-// const winston = require('../../../log');
+const { infoLogger } = require('../../../logger');
 
 const {
   create,
@@ -75,6 +75,7 @@ module.exports = {
   async getAll(req, res) {
     // console.log('test')
     // winston.info('I am here this is your point post file\n')
+    infoLogger()
     redisclient().get("posts", async (err, jobs) => {
       if (err) throw err;
 
@@ -85,7 +86,7 @@ module.exports = {
         });
       } else {
 
-        return await getAll(res)
+         await getAll(res)
       }
     });
   },
