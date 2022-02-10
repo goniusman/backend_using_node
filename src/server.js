@@ -13,17 +13,21 @@ const PORT = process.env.PORT || 5000;
 // });
 
 app.get("/", (req, res) => {
+  console.log('nice for nginx')
   // infoLogger()
   // errorLogger(localUri)
-  res.status(200).json({ message: "Server is running" +PORT  });
+  res.status(200).json({ message: "Server is running" + PORT  });
 });
 
+app.enable('trust proxy')
 app.get('*', function(req, res){
   errorLogger(localUri)
+  console.log('hellow from nothing NginX')
   res.status(500).send('what???');
 });
    
 app.listen(PORT, () => {
+  
   localData();
   // liveData();
   // console.log(test.uri)

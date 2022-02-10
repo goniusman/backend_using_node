@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  dbs:
+    image: mongo
+    container_name: dbs
+    ports:
+      - "27037:27017"
+    volumes:
+      - mongovol:/data/db
+  rediss:
+    image: redis
+    container_name: rediss
+    ports:
+      - "6363:6379"
+    volumes:
+      - redisvol:/data/db
+  latestnodeapp:
+    build: .
+    container_name: latestapps
+    ports:
+      - "5001:5000"
+    network_mode: bridge
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - PORT=5000
+      - MONGODB_local=dbs 
+      - REDIS_HOST=rediss
+      - MONGODB_PORT=27017
+      - REDIS_PORT=6379
+    env_file:
+      - ./.env
+    depends_on:
+      - mongo
+      - redis
+volumes:
+  mongovol:
+  redisvol:
+networks:
+  mynet:
+    driver: bridge

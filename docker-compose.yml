@@ -1,41 +1,56 @@
 version: "3.8"
 services:
-  mongo:
-    image: mongo
-    container_name: mongo
+
+  nginx:
+    image: nginx:stable-alpine
     ports:
-      - "27017:27017"
+      - "5000:80"
+    volumes: 
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
-      - customnet
-    volumes:
-      - mongo:/db
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
-    networks:
-      - customnet
-    volumes:
-      - redis:/redis
+      - mynet
   backendwnode:
-    image: backendnode
-    container_name: backendnode
-    ports:
-      - "5000:5000"
+    build: .
+    # container_name: backendwnode
+    # ports:
+    #   - "5000:5000"
     networks:
-      - customnet
-    volumes:
-      - myvol:/app
-      - MONGODB_local=mongo
-      - REDIS_host=redis
+      - mynet
+    environment:
+      - PORT=5000
+      - MONGODB_local=mongo 
+      - REDIS_HOST=redis
+      - MONGODB_PORT=27017
+      - REDIS_PORT=6379
+    env_file:
+      - ./.env
     depends_on:
       - mongo
       - redis
-networks:
-  customnet:
-    driver: bridge
-volumes:
   mongo:
+    image: mongo
+    # container_name: mongo
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=osman
+    #   - MONGO_INITDB_ROOT_PASSWORD=goni
+    ports:
+      - "27037:27017"
+    networks:
+      - mynet
+    volumes:
+      - mongovol:/data/db
   redis:
-  myvol:
+    image: redis
+    # container_name: redis
+    ports:
+      - "6363:6379"
+    networks:
+      - mynet
+    volumes:
+      - redisvol:/data/db
+volumes:
+  mongovol:
+  redisvol:
+networks:
+  mynet:
+    driver: bridge
