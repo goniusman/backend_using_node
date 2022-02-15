@@ -22,20 +22,27 @@ const mongoErrorTransport = (uri) => new winston.transports.MongoDB({
 });
 
 
-// const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
-// const elasticsearchOptions = {
-//     level: 'info',
-//     clientOpts: { node: `http://${HOST}:9220` },
-//     indexPrefix: 'log-BackendNode'
-// };
-// const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
+const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
+const elasticsearchOptions = {
+    level: 'info',
+    clientOpts: { node: `http://${HOST}:9200` },
+    indexPrefix: 'log-BackendNode'
+};
+const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
 
 
 const infoTransport = new (winston.transports.DailyRotateFile)(
     {
     filename: 'logs/info/log-%DATE%.log', 
-    datePattern: 'yyyy-MM-DD'
+    datePattern: 'yyyy-MM-DD',
     // datePattern: 'yyyy-MM-DD-HH'
+    // name: 'file',
+    colorize: true,  
+    json: true,
+    maxsize: 50 * 1024 * 1024,
+    maxFiles: 10,
+    zippedArchive: true
+
   }
 )
 
@@ -43,7 +50,7 @@ const errTransport = new (winston.transports.DailyRotateFile)(
     {
       filename: 'logs/err/log-%DATE%.log', 
       datePattern: 'yyyy-MM-DD',
-      name: 'file',
+      // name: 'file',
       colorize: true, 
       json: true,
       maxsize: 50 * 1024 * 1024,
@@ -56,7 +63,7 @@ module.exports.infoLogger = () => expressWinston.logger({
   transports: [
       // new winston.transports.Console(),
       infoTransport,
-      // esTransport,
+      esTransport,
     //   new winston.transports.Console({
     //     json: true,
     //     colorize: true
@@ -73,10 +80,11 @@ module.exports.errorLogger = (uri) => expressWinston.errorLogger({
       // new winston.transports.Console(),
       mongoErrorTransport(uri),
       errTransport,
-      new winston.transports.Console({
-        json: true,
-        colorize: true
-      })
+      esTransport,
+      // new winston.transports.Console({
+      //   json: true,
+      //   colorize: true
+      // })
   ],
   ignoreRoute: function(req, res) {
     return true;

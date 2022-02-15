@@ -1,6 +1,5 @@
 version: "3.8"
 services:
-
   nginx:
     image: nginx:stable-alpine
     ports:
@@ -36,46 +35,15 @@ services:
     ports:
       - "27037:27017"
     networks:
-<<<<<<< HEAD
       - mynet
     volumes:
       - mongovol:/data/db
-  redis:
-    image: redis
-    # container_name: redis
-=======
-<<<<<<< HEAD
-      - mynet
-    volumes:
-      - mongo_data:/data/db
-=======
-      - customnet
-    volumes:
-      - mongo:/db
->>>>>>> bb27d22e8326cc0653531fd4f1c39cbd9ffa25fa
   redis:
     image: redis
     container_name: redis
     ports:
       - "6379:6379"
     networks:
-<<<<<<< HEAD
-      - mynet
-
-  backendUsingNode:
-=======
-      - customnet
-    volumes:
-      - redis:/redis
-  backendwnode:
->>>>>>> bb27d22e8326cc0653531fd4f1c39cbd9ffa25fa
-    image: backendnode
-    container_name: backendnode
->>>>>>> e75d2506a0cf7e334919ed994291589876a4a505
-    ports:
-      - "6363:6379"
-    networks:
-<<<<<<< HEAD
       - mynet
     volumes:
       - redisvol:/data/db
@@ -85,38 +53,3 @@ volumes:
 networks:
   mynet:
     driver: bridge
-=======
-<<<<<<< HEAD
-      - mynet
-    volumes:
-      - backendnode_data:/usr/share/backendnode/data
-    environment:
-      - DEBUG=1
-      - MONGODB_local=mongo
-      - REDIS_HOST=redis
-=======
-      - customnet
-    volumes:
-      - myvol:/app
-      - MONGODB_local=mongo
-      - REDIS_host=redis
->>>>>>> bb27d22e8326cc0653531fd4f1c39cbd9ffa25fa
-    depends_on:
-      - mongo
-      - redis
-networks:
-<<<<<<< HEAD
-  mynet:
-    driver: bridge
-volumes:
-  mongo_data:
-  backendnode_data:
-=======
-  customnet:
-    driver: bridge
-volumes:
-  mongo:
-  redis:
-  myvol:
->>>>>>> bb27d22e8326cc0653531fd4f1c39cbd9ffa25fa
->>>>>>> e75d2506a0cf7e334919ed994291589876a4a505
