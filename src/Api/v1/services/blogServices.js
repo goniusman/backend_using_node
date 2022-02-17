@@ -107,18 +107,19 @@ module.exports = {
   
   },
 
-  getSinglePost(req, res) {
-    let { id } = req.params;
-    // console.log('i am single')
-    redisclient().get(`post_${id}`, async (err, jobs) => {
-      if (err) throw err;
+  getSinglePost(res, id) {
+    // let { id } = req.params;
+    // console.log(req.params)
+    // // console.log('i am single')
+    // redisclient().get(`post_${id}`, async (err, jobs) => {
+    //   if (err) throw err;
 
-      if (jobs) {
-        res.status(200).send({
-          jobs: JSON.parse(jobs),
-          message: "data retrieved from the cache",
-        });
-      } else {
+    //   if (jobs) {
+    //     res.status(200).send({
+    //       jobs: JSON.parse(jobs),
+    //       message: "data retrieved from the cache",
+    //     });
+    //   } else {
         Post.findById(id)
           .then((post) => {
             if (!post) {
@@ -131,8 +132,8 @@ module.exports = {
             }
           })
           .catch((error) => serverError(res, error));
-      }
-    });
+    //   }
+    // });
   },
 
   update(req, res) {

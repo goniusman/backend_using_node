@@ -73,7 +73,7 @@ module.exports = {
   },
 
   async getAll(req, res) {
-    // console.log('test')
+    // console.log('i am from native') 
     // winston.info('I am here this is your point post file\n')
     infoLogger()
     redisclient().get("posts", async (err, jobs) => {
@@ -81,8 +81,9 @@ module.exports = {
 
       if (jobs) {
         res.status(200).send({
-          jobs: JSON.parse(jobs),
+          data: JSON.parse(jobs),
           message: "data retrieved from the cache",
+          success: true
         });
       } else {
 
@@ -99,8 +100,9 @@ module.exports = {
 
       if (jobs) {
        return res.status(200).send({
-          jobs: JSON.parse(jobs),
+          data: JSON.parse(jobs),
           message: "data retrieved from the cache",
+          success: true
         });
       } else {
 

@@ -30,7 +30,7 @@ app.listen(PORT, () => {
   localData();
   // liveData();
   // console.log(test.uri)
-  if ( process.env.ENVIRONMENT != "TEST" )app.use(errorLogger(liveUri));
+  if ( process.env.ENVIRONMENT != "TEST" )app.use(errorLogger(localUri));
 
   infoLogger()
   console.log("app is running on port ", PORT);
