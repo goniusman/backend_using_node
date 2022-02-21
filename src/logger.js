@@ -79,8 +79,8 @@ module.exports.errorLogger = (uri) => expressWinston.errorLogger({
   transports: [
       // new winston.transports.Console(),
       mongoErrorTransport(uri),
-      // errTransport,
-      esTransport,
+      errTransport,
+      // esTransport,
       // new winston.transports.Console({
       //   json: true,
       //   colorize: true
