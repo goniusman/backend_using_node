@@ -11,6 +11,7 @@ module.exports = {
   liveData(){
     const HOST = process.env.MONGODB_live || "localhost";
     const uri = `${HOST}`;
+    
     const options = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false,useCreateIndex: true };
     mongoose.connect(uri, options, (err, db) => {
       if (err) {
