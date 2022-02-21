@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 const HOST = process.env.MONGODB_local || "localhost";
 module.exports = {
 
-  // liveUri: `mongodb+srv://44447770:44447770@cluster0.ops0t.mongodb.net/blog`, 
+  liveUri: `mongodb+srv://44447770:44447770@cluster0.ops0t.mongodb.net/blog`, 
   localUri: `mongodb://${HOST}:27017/blog`, 
   liveData(){
     const HOST = process.env.MONGODB_live || "localhost";

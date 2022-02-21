@@ -1,5 +1,5 @@
 const app = require("./app");
-const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
+const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const { errorLogger, infoLogger } = require("./logger");
 const { CronJobs } = require("./cron.js")
 
@@ -17,11 +17,12 @@ app.get('*', function(req, res){
 });
    
 app.listen(PORT, () => {
-  localData();
+  // localData();
   // liveData();
   // console.log(test.uri)
   if ( process.env.ENVIRONMENT !== "test" ) 
-    app.use(errorLogger(localUri)); 
+        app.use(errorLogger(liveUri)); 
+        liveData();
   
   CronJobs();
   infoLogger()
