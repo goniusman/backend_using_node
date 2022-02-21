@@ -6,7 +6,7 @@ const { errorLogger, infoLogger } = require("./logger");
 const PORT = process.env.PORT || 5000;
 
 app.get("/api", (req, res) => { 
-  console.log(hello)
+  // console.log(hello)
   infoLogger()
   res.status(500).json({ message: "Server is running" + PORT  });
 });
@@ -26,7 +26,7 @@ app.listen(PORT, () => {
   infoLogger()
   console.log("app is running on port ", PORT);
 });
-
+ 
  
 
 // console.log(app)
