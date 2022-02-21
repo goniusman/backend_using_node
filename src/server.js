@@ -21,7 +21,7 @@ app.listen(PORT, () => {
   // liveData();
   // console.log(test.uri)
   if ( process.env.ENVIRONMENT !== "test" ) 
-  app.use(errorLogger(localUri)); 
+    app.use(errorLogger(localUri)); 
   
   CronJobs();
   infoLogger()
