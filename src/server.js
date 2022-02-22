@@ -1,7 +1,7 @@
 const app = require("./app");
 const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
 const { errorLogger, infoLogger } = require("./logger");
-const { CronJobs } = require("./cron.js")
+const { CronJobs } = require("./cron")
 
 // console.log(app)
 const PORT = process.env.PORT || 5000;
@@ -23,7 +23,8 @@ app.listen(PORT, () => {
   if ( process.env.ENVIRONMENT !== "test" ) 
   app.use(errorLogger(localUri)); 
   
-  CronJobs();
+  CronJobs()
+  console.log()
   infoLogger()
   console.log("app is running on port ", PORT);
 });
