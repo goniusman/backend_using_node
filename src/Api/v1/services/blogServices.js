@@ -99,7 +99,7 @@ module.exports = {
               // return res.status(200).json(posts);
               redisclient().setex("posts", 600, JSON.stringify(posts));
 
-              return res.json({ success: true, data: posts });
+              return res.json({ success: true, post: posts  });
             }
           })
           .catch((error) => serverError(res, error));
@@ -235,11 +235,9 @@ module.exports = {
       .catch((error) => serverError(res, error));
   },
 
-  searchQuery(req, res) {
+  searchQuery(res, query) {
     // console.log('hello')
     try {
-      const { query } = req.params;
-
       if (query.trim()) {
         Post.find()
           .then((data) => {
@@ -251,7 +249,7 @@ module.exports = {
             if (newData.length === 0) {
               return res.json({ success: false, message: "No match found.." });
             } else {
-              return res.json({ success: true, data: newData });
+              return res.json({ success: true, post: newData });
             }
           })
           .catch((error) => serverError(res, error));

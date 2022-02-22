@@ -80,12 +80,12 @@ module.exports = {
       if (err) throw err;
 
       if (jobs) {
-        res.status(200).send({
-          data: JSON.parse(jobs),
+        return res.json({ 
+          post: JSON.parse(jobs),
           message: "data retrieved from the cache",
           success: true
         });
-      } else {
+      } else { 
 
          await getAll(res)
       }
