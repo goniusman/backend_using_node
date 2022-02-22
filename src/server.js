@@ -17,12 +17,12 @@ app.get('*', function(req, res){
 });
    
 app.listen(PORT, () => {
-  // localData();
+  localData();
   // liveData();
   // console.log(test.uri)
   if ( process.env.ENVIRONMENT !== "test" ) 
-        app.use(errorLogger(liveUri)); 
-        liveData();
+        app.use(errorLogger(localUri)); 
+        // liveData();
   
   CronJobs();
   infoLogger()
