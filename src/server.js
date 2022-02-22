@@ -17,6 +17,7 @@ app.get('*', function(req, res){
 });
    
 app.listen(PORT, () => {
+  console.log('i am listening')
   localData();
   // liveData();
   // console.log(test.uri)
