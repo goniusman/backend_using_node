@@ -3,7 +3,6 @@ require("dotenv").config();
 const express = require("express");
 const winston = require("winston");
 const fs = require("fs");
-
 const morgan = require("morgan");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -12,24 +11,20 @@ const passport = require("passport");
 const path = require("path");
 const multer = require("multer");
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./swagger.json");
 
+const swaggerDocument = require("./swagger.json");
 const { infoLogger, errorLogger} = require("./logger");
 require("./passport")(passport);
 const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const {handleRequest,handleError } = require("./Api/v1/utils/error")
 
-
-// local file
-
-// const logger = require('./Config/Logger.ts');
-
 // for dot env
 const app = express(); 
 // cross origin platform
 app.use(cors());
-//boyd parser when submited
-app.use(bodyParser.urlencoded({ extended: false }));
+
+//body parser when submited
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(handleRequest);

@@ -1,11 +1,26 @@
 const redis = require("redis")
 
 module.exports = () => {
-  const host = process.env.REDIS_HOST || '127.0.0.1'
-  const redisPort = process.env.REDIS_PORT || 6379
+
+  const host=""
+  const redisPort=""
+  const redisPass=""
+if(process.env.NODE_ENV=="production"){
+   host = process.env.REDIS_HOST || '127.0.0.1'
+   redisPort = process.env.REDIS_PORT || 6379
+   redisPass = process.env.REDIS_PASS || ""
+}else{
+   host = '127.0.0.1'
+   redisPort = 6379
+   redisPass = ""
+}
+
+  
   const client = redis.createClient({ 
-    port : redisPort,
-    host : host
+      host : host,  
+      no_ready_check: true,
+      auth_pass: redisPass, 
+      port : redisPort,
   });
 
   client.on("error", (err) => {
@@ -13,7 +28,9 @@ module.exports = () => {
     console.log(err);
   })
 
-
+  client.on('connect', () => {   
+    global.console.log("connected to live server");
+  })
   return client
 }
 

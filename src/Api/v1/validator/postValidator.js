@@ -20,9 +20,9 @@ const validate = (post) => {
   if (!post.tag) {
     error.tag = "Please Provide Your tag";
   }
-  if (!post.author) {
-    error.author = "Please Provide Your tag";
-  }
+  // if (!post.author) {
+  //   error.author = "Please Provide Your tag";
+  // }
 
   return {
     error,

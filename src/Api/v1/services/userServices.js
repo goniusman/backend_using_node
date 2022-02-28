@@ -93,7 +93,7 @@ module.exports = {
                 return res.status(200).json({
                   success: true,
                   message: "User Created Successfully",
-                  data: user,
+                  user: user,
                 });
               })
               .catch((error) => serverError(res, error));
@@ -268,9 +268,7 @@ module.exports = {
         { new: true }
       );
 
-      return res
-        .status(201)
-        .json({ success: true, message: "Your profile has updated!" });
+      return res.json({ success: true, message: "Your profile picture has been uploaded!" });
 
     } catch (error) {
       return res

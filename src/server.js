@@ -17,13 +17,19 @@ app.get('*', function(req, res){
 });
    
 app.listen(PORT, () => {
-  console.log('i am listening')
-  localData();
-  // liveData();
+  console.log(process.env.NODE_ENV) 
+  
+  if(process.env.NODE_ENV !== "production"){
+    localData();
+  }else{
+    liveData();
+  }
   // console.log(test.uri)
-  if ( process.env.ENVIRONMENT !== "test" ) 
-        app.use(errorLogger(localUri)); 
-        // liveData();
+  if ( process.env.NODE_ENV !== "production" ) {
+    app.use(errorLogger(localUri)); 
+  }else{
+    app.use(errorLogger(liveUri)); 
+  }
   
   CronJobs();
   infoLogger()

@@ -17,6 +17,7 @@ const {
   remove,
   toogleUpdate,
   searchQuery,
+  imageUpload
 } = require("../services/blogServices");
 
 
@@ -28,18 +29,20 @@ module.exports = {
       image,
       category,
       tag,
-      author,
       comments,
       isPublished,
     } = req.body;
+    console.log(req.files)
 
-    let validate = postValidator({ title, description, category, tag, author });
+    let { name } = req.user;
+
+    let validate = postValidator({ title, description, category, tag });
 
     if (!validate.isValid) {
       return res.status(400).json(validate.error);
     } else {
 
-       ////if image has uploaded
+       ////if image have than uploaded
       if (req.files != null) {
         const dir = "./uploads";
         // const dir = `${__dirname }/../../../../` + "uploads";
@@ -67,7 +70,7 @@ module.exports = {
         });
       }
 
-      return await create(res, {title,description,image,category,tag,author,comments,isPublished}, filePath)
+      return await create(res, {title,description,category,tag,author:name,isPublished}, filePath)
       
     }
   },
@@ -78,7 +81,7 @@ module.exports = {
     infoLogger()
     redisclient().get("posts", async (err, jobs) => {
       if (err) throw err;
-
+ 
       if (jobs) {
         return res.json({ 
           post: JSON.parse(jobs),
@@ -133,7 +136,7 @@ module.exports = {
   async imageUpload(req, res) {
     const { id } = req.params;
     if (req.files === null) {
-      return res.status(400).json({ msg: "No file uploaded" });
+      return res.json({ message: "No file uploaded" });
     }
 
     const file = req.files.file;
@@ -153,7 +156,7 @@ module.exports = {
       }
     });
 
-    return await imageUpload(res,id, filePath)
+    return await imageUpload(res, id, filePath)
   },
 
   async searchQuery(req, res) {

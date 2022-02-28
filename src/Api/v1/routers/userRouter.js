@@ -5,9 +5,9 @@ const {
   validateUserSignIn,
 } = require("../middlewares/validation/user");
 
-const { isAuth } = require("../middlewares/auth");
+// const { isAuth } = require("../middlewares/auth");
 const { isResetTokenValid } = require("../middlewares/user");
-
+const authenticate = require("../../../authenticate");
 const {
   login,
   register,
@@ -20,14 +20,14 @@ const {
 } = require("../controllers/userController");
 
 const upload = require("../utils/upload");
+
 router.get("/all", allUser);
 router.post("/register", validateUserSignUp, userVlidation, register);
-router.post("/verify-email", verifyEmail);
-router.post("/forgot-password", forgotPassword);
-router.post("/reset-password/:token/:id", isResetTokenValid, resetPassword);
 router.post("/login", validateUserSignIn, userVlidation, login);
-router.post("/logout", isAuth, logOut);
-router.post("/profile-picture", isAuth, upload.single("feturedimage"), imageUpload );
-
+router.put("/verify-email", authenticate, verifyEmail);
+router.put("/profile-picture", authenticate, upload.single("profile_picture"), imageUpload );
+router.post("/forgot-password", authenticate, forgotPassword);
+router.put("/reset-password/:token/:id", isResetTokenValid, resetPassword);
+router.post("/logout", authenticate, logOut);
 
 module.exports = router;

@@ -10,63 +10,15 @@ const postValidator = require("../validator/postValidator");
 // const winston = require('../../../log');
 
 module.exports = {
-  create(req, res) {
-    let {
-      title,
-      description,
-      image,
-      category,
-      tag,
-      author,
-      comments,
-      isPublished,
-    } = req.body;
-    // console.log(req.body);
-    let validate = postValidator({ title, description, category, tag, author });
-
-    //     console.log(root)
-    // return res.status(200).json({message: 'okay'})
-
-    if (!validate.isValid) {
-      return res.status(400).json(validate.error);
-    } else {
-      // if image has uploaded
-      if (req.files != null) {
-        const dir = "./uploads";
-        // const dir = `${__dirname }/../../../../` + "uploads";
-        if (!fs.existsSync(dir)) {
-          fs.mkdirSync(dir);
-        }
-        if (req.files === null) {
-          return res.status(400).json({ file: "No file uploaded" });
-        }
-        let file = req.files.file;
-
-        var filePath = `/uploads/` + Date.now() + `-${file.name}`;
-
-        const root = path.resolve("./");
-        file.mv(`${root}/uploads/` + Date.now() + `-${file.name}`, (err) => {
-          if (err) {
-            // console.log(err);
-            // return res.status(500).json(err);
-            return res.json({
-              success: false,
-              message: "image not uploaded",
-              error: err,
-            });
-          }
-        });
-      }
-
+  create(res, {title,description,category,tag,author,isPublished}, filePath) {
+    
       let post = new Post({
         title,
         description,
-        image,
         category,
         tag,
         author,
         image: filePath || "null",
-        comments,
         isPublished,
       });
 
@@ -75,12 +27,12 @@ module.exports = {
         .then((post) => {
           return res.json({
             success: true,
-            message: "User Created Successfully",
+            message: "Post Created Successfully",
             data: post,
           });
         })
         .catch((error) => serverError(res, error));
-    }
+    
   },
 
   async getAll( res) {
@@ -195,28 +147,28 @@ module.exports = {
       .catch((error) => serverError(res, error));
   },
 
-  imageUpload(req, res) {
-    const { id } = req.params;
-    if (req.files === null) {
-      return res.status(400).json({ msg: "No file uploaded" });
-    }
+  imageUpload(res, id, filePath) {
+    // const { id } = req.params;
+    // if (req.files === null) {
+    //   return res.status(400).json({ msg: "No file uploaded" });
+    // }
 
-    const file = req.files.file;
+    // const file = req.files.file;
 
-    var filePath = `/uploads/` + Date.now() + `-${file.name}`;
+    // var filePath = `/uploads/` + Date.now() + `-${file.name}`;
 
-    const root = path.resolve("./");
-    file.mv(`${root}/uploads/` + Date.now() + `-${file.name}`, (err) => {
-      if (err) {
-        // console.log(err);
-        // return res.status(500).json(err);
-        return res.json({
-          success: false,
-          message: "image not uploaded",
-          error: err,
-        });
-      }
-    });
+    // const root = path.resolve("./");
+    // file.mv(`${root}/uploads/` + Date.now() + `-${file.name}`, (err) => {
+    //   if (err) {
+    //     // console.log(err);
+    //     // return res.status(500).json(err);
+    //     return res.json({
+    //       success: false,
+    //       message: "image not uploaded",
+    //       error: err,
+    //     });
+    //   }
+    // });
 
     post
       .findById(id)

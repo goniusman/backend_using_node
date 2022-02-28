@@ -17,7 +17,7 @@ module.exports = {
       if (err) {
         console.error(err);
       }else{
-        console.log("database connection established on cluster0");
+        console.log("database connection established on cluster");
       }
     });
   },
@@ -32,6 +32,7 @@ module.exports = {
         console.log("database connection established on locally");
       }
     });
+    mongoose.set('useUnifiedTopology', true);
   }
 
 }

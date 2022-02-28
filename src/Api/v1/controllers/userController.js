@@ -88,12 +88,13 @@ module.exports = {
   },
 
   async verifyEmail(req, res) {
-    const { userId, otp } = req.body;
+    const { otp } = req.body;
+    const {_id} = req.user
 
-    if (!userId || !otp.trim())
+    if (!_id || !otp.trim())
       return resourceError(res, "Invalid request, missing parameters!");
 
-      return await verifyEmail(res, userId, otp); 
+      return await verifyEmail(res, _id, otp); 
 
   },
 
@@ -126,7 +127,7 @@ module.exports = {
 
   async imageUpload(req, res) {
     const { user } = req;
-    if (!user) return res.status(401).json({ success: false, message: "unauthorized access!" });
+    if (!user) return res.json({ success: false, message: "unauthorized access!" });
     // if (typeof req.file.path  == "undefined") {
     //     return res.status(400).json({success: "false", file: "No file uploaded" });
     // }
