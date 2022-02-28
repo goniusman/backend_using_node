@@ -1,7 +1,9 @@
 const path = require("path");
 const cron = require("node-cron");
 
-module.exports.CronJobs = () => cron.schedule('1 * * * * *', function() {
+module.exports = {
+      CronJobs(){  
+            cron.schedule('1 * * * * *', function() {
                                     const dirt = path.resolve(".");
                                     const fdate = new Date()
                                     const fully = fdate.getFullYear();
@@ -19,6 +21,8 @@ module.exports.CronJobs = () => cron.schedule('1 * * * * *', function() {
                                                 console.log('successfully deleted logs file')
                                           }
                                     });
-                              });
+            });
+      }
+}
 
 
