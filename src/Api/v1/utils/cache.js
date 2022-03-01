@@ -2,9 +2,9 @@ const redis = require("redis")
 
 module.exports = () => {
 
-  const host=""
-  const redisPort=""
-  const redisPass=""
+  var host=""
+  var redisPort=""
+  var redisPass=""
 if(process.env.NODE_ENV=="production"){
    host = process.env.REDIS_HOST || '127.0.0.1'
    redisPort = process.env.REDIS_PORT || 6379
