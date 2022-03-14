@@ -13,7 +13,7 @@ const {
   imageUpload
 } = require("../controllers/blogController");
 
-router.post("/", authenticate, create); 
+router.post("/", create); 
 router.get("/", getAll);
 router.get('/:id', getSinglePost);
 router.put("/:id", authenticate, update);
