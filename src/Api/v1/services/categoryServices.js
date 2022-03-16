@@ -16,9 +16,10 @@ module.exports = {
         categories
           .save()
           .then((cat) => {
-            return res.status(201).json({
-              message: "Created Category",
-              cat,
+            return res.json({
+              success: true,
+              message: "Category Created Successfully",
+              data: cat,
             });
           })
           .catch((error) => serverError(res, error));
@@ -35,9 +36,9 @@ module.exports = {
               message: "No Cat Found",
             });
           } else {
-            console.log('from database')
+            // console.log('from database')
             redisclient().setex("cat", 600, JSON.stringify(cats));
-            return res.json({ success: true, data: cats });
+            return res.json({ success: true, data: cats, message: "Fetch from databases" });
           
           } 
         })
@@ -55,7 +56,11 @@ module.exports = {
             message: "No cat Found",
           });
         } else {
-          return res.status(200).json(cat);
+          return res.json({
+            success: true,
+            message: "Fetched From databases",
+            data: cat,
+          });
         }
       })
       .catch((error) => serverError(res, error));

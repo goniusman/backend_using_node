@@ -4,6 +4,9 @@ const Category = require("../models/Category");
 const { serverError, resourceError } = require("../utils/error");
 const categoryValidator = require("../validator/categoryValidator");
 
+const { create, getAll, remove, update, getSingleCategory } = require('../services/categoryServices')
+
+
 module.exports = {
 
   create(req, res) {
@@ -17,7 +20,7 @@ module.exports = {
       return create(res,category, description);
     }
   },
-
+ 
   getAll(req, res) {
 
     redisclient().get("cat", async (err, jobs) => {
@@ -25,10 +28,11 @@ module.exports = {
 
       if (jobs) {
 
-          res.status(200).send({
-              jobs: JSON.parse(jobs),
-              message: "data retrieved from the cache"
-          });
+        return res.json({ 
+          cat: JSON.parse(jobs),
+          message: "data retrieved from the cache",
+          success: true
+        });
 
       }else {
 

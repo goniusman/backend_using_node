@@ -49,7 +49,7 @@ const infoTransport = new (winston.transports.DailyRotateFile)(
 const errTransport = new (winston.transports.DailyRotateFile)(
     {
       filename: 'logs/err/log-%DATE%.log', 
-      datePattern: 'yyyy\MM\DD',
+      datePattern: 'yyyy-MM-DD',
       // name: 'file',
       colorize: true, 
       json: true,

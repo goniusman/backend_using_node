@@ -5,7 +5,7 @@ const { errorLogger } = require("../../../logger");
 module.exports = {
   serverError(res, error) {
     // console.log(error);
-    // errorLogger(localUri, error)
+    errorLogger(localUri, error)
      res.json({
       "error": error,
       "message": "Server Error Occurred",

@@ -3,6 +3,7 @@ const Comment = require("../models/Comment");
 const Post = require("../models/Post");
 const { serverError, resourceError } = require("../utils/error");
 const commentValidator = require("../validator/commentValidator");
+const { create, getAll, remove, getSingleComment, update} = require("../services/commentServices");
 
 module.exports = {
   

@@ -22,7 +22,7 @@ app.listen(PORT, () => {
   if(process.env.NODE_ENV !== "production"){
     localData();
   }else{
-    liveData();
+    liveData(); 
   }
   // console.log(test.uri)
   if ( process.env.NODE_ENV !== "production" ) {
@@ -31,8 +31,8 @@ app.listen(PORT, () => {
     app.use(errorLogger(liveUri)); 
   }
   
-  CronJobs()
-  console.log()
+  // CronJobs()
+  // console.log()
   infoLogger()
   console.log("app is running on port ", PORT);
 });

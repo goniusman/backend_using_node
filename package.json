@@ -6,7 +6,8 @@
   "scripts": {
     "start": "set NODE_ENV=production && node src/server.js",
     "dev": "nodemon -L src/server.js",
-    "test": "jest --config=jest.config.js --watch --detectOpenHandles"
+    "test": "jest --config=jest.config.js --watch --detectOpenHandles",
+    "lint": "yarn add -D prettier && yarn add -D babel-eslint && npx install-peerdeps --dev eslint-config-airbnb && yarn add -D eslint-config-prettier eslint-plugin-prettier"
   },
   "keywords": [],
   "author": "",
@@ -55,9 +56,19 @@
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.7",
     "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.1.0",
     "babel-jest": "^27.4.6",
+    "eslint": "8.2.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "7.28.0",
+    "eslint-plugin-react-hooks": "4.3.0",
     "jest": "^27.4.7",
     "nodemon": "^2.0.12",
+    "prettier": "^2.5.1",
     "superagent": "^6.1.0",
     "supertest": "^6.1.6"
   }
