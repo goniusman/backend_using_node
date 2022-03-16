@@ -30,9 +30,9 @@ module.exports = {
       category,
       tag,
       comments,
-      isPublished,
+      isPublished
     } = req.body;
-    console.log(req.files)
+    // console.log(req.headers)   
 
     let { name } = req.user;
 
@@ -70,7 +70,7 @@ module.exports = {
         });
       }
 
-      return await create(res, {title,description,category,tag,author:name,isPublished}, filePath)
+      return await create(res, {title,description,category,tag,author: name,isPublished}, filePath)
       
     }
   },
