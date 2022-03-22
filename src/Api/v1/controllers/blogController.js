@@ -34,7 +34,7 @@ module.exports = {
     } = req.body;
     // console.log(req.headers)   
 
-    let { name } = req.user;
+    // let { name } = req.user;
 
     let validate = postValidator({ title, description, category, tag });
 
@@ -70,7 +70,7 @@ module.exports = {
         });
       }
 
-      return await create(res, {title,description,category,tag,author: name,isPublished}, filePath)
+      return await create(res, {title,description,category,tag,author: 'default',isPublished}, filePath)
       
     }
   },

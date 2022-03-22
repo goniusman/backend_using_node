@@ -10,13 +10,25 @@ exports.generateOTP = () => {
 }
 
 exports.mailTrap = () => nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port: 2525,
+    host: "offenta.com",
+    port: 465,
+    secure: true,
     auth: {
-      user: "978915cc907530",
-      pass: "63377d08045f44"
+      user: "goniusman@offenta.com",
+      pass: "44770osGO@"
     }
 });
+
+
+//// for testing purposes
+// exports.mailTrap = () => nodemailer.createTransport({
+//     host: "smtp.mailtrap.io",
+//     port: 2525,
+//     auth: {
+//       user: "978915cc907530",
+//       pass: "63377d08045f44"
+//     }
+// });
 
 exports.generateHTMLTemplate = code => {
   return `

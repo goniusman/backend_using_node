@@ -84,6 +84,14 @@ module.exports = {
               to: user.email,
               subject: "Verify Your Email Account",
               html: generateHTMLTemplate(otp),
+            }, function(err, info) {
+              if (err) {
+                // console.log("this is error")
+                console.log(err)
+              } else {
+                // console.log("this is info")
+                console.log(info);
+              }
             });
 
             await user
@@ -118,7 +126,7 @@ module.exports = {
     // console.log(token)
 
     const isMatched = await token.compareToken(otp);
-    console.log(isMatched)
+    // console.log(isMatched)
     if (!isMatched) return resourceError(res, "please provide a valid token!");
 
     //// the exact error is here
@@ -248,8 +256,6 @@ module.exports = {
       .catch((error) => serverError(res, error));
   },
 
-
-
   async imageUpload(res, user, filePath) {
 
     // cloudinary uploader
@@ -286,5 +292,58 @@ module.exports = {
           })
           .catch((error) => serverError(res, error));
   },
+
+
+  async resend(res, email, id){
+
+    const token = await VToken.findOne({ owner: id });
+    await VToken.findByIdAndDelete(token._id);
+
+
+    var otp = generateOTP();
+
+    const verificaatinToken = new VToken({
+      owner: id,
+      token: otp,
+    });
+
+    await verificaatinToken.save();
+
+    mailTrap().sendMail({
+      from: "goniusman@offenta.com",
+      // from: 'goniusman400@gmail.com',
+      to: email,
+      subject: "Verify Your Email Account",
+      html: generateHTMLTemplate(otp),
+    }, function(err, info) {
+      if (err) {
+        // console.log("this is error")
+        // console.log(err)
+        return res.status(500).json({ success: false, message: "Resend Email Not Working!" });
+      } else {
+        // console.log("this is info")
+        // console.log(info);
+        return res.status(500).json({ success: true, message: "Email Send Successfully!" });
+     
+      }
+    });
+  },
+
+  async updateProfile(res, user, { name, email, username}){
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        user._id,
+        { name, email, username },
+        { new: true }
+      );
+
+      return res.json({ success: true, message: "Your profile has been uploaded!" });
+
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ success: false, message: "server error, try after some time", error });
+    }
+  }
 
 };

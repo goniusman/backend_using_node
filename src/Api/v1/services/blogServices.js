@@ -88,9 +88,8 @@ module.exports = {
     // });
   },
 
-  update(req, res) {
-    let { id } = req.params;
-    let { title, description, category, tag } = req.body;
+  update(res,id, title,description,category,tag) {
+
     Post.findById(id)
       .then((post) => {
         post.title = title;
@@ -110,8 +109,8 @@ module.exports = {
       .catch((error) => serverError(res, error));
   },
 
-  remove(req, res) {
-    let { id } = req.params;
+  remove(res,id) {
+  
     Post.findOneAndDelete({ _id: id })
       .then((result) => {
         if (result == null) {

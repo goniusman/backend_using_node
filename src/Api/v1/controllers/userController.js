@@ -1,13 +1,7 @@
-
-
-
-
-
-
 const User = require("../models/User");
 
-
 const registerValidator = require("../validator/registerValidator");
+const updateValidator = require("../validator/updateValidator");
 const loginValidator = require("../validator/loginValidator");
 
 const redisclient = require("../utils/cache");
@@ -31,6 +25,8 @@ const {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  resend,
+  updateProfile
 } = require("../services/userServices");
 
 
@@ -142,5 +138,40 @@ module.exports = {
     return await logOut(res, tokens, id, token);
     
   },
+
+  async resend(req, res){
+    const { user } = req;
+    if(!user){
+      return null;
+    }
+    return await resend(res, user.email, user._id)
+  },
+
+  async updateProfile(req, res){
+    const { user } = req;
+
+    let { name, username, email  } = req.body;
+    // console.log(req.body);
+    let validate = updateValidator({
+      email,
+      username,
+      name
+    });
+
+    if (!validate.isValid) {
+      // console.log(validate.error);
+      return res.status(400).json({
+        success: false,
+        message: "Empty Value",
+        data: validate.error,
+      });
+    } else {
+
+      return await updateProfile(res, user, { name, email, username})
+
+    }
+
+
+  }
 
 };

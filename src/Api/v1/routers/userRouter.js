@@ -17,6 +17,8 @@ const {
   verifyEmail,
   forgotPassword,
   resetPassword,
+  resend,
+  updateProfile
 } = require("../controllers/userController");
 
 const upload = require("../utils/upload");
@@ -24,8 +26,10 @@ const upload = require("../utils/upload");
 router.get("/all", allUser);
 router.post("/register", validateUserSignUp, userVlidation, register);
 router.post("/login", validateUserSignIn, userVlidation, login);
+router.post("/resend", authenticate, resend);
 router.put("/verify-email", authenticate, verifyEmail);
 router.put("/profile-picture", authenticate, upload.single("profile_picture"), imageUpload );
+router.put("/update-profile", authenticate, updateProfile );
 router.post("/forgot-password", authenticate, forgotPassword);
 router.put("/reset-password/:token/:id", isResetTokenValid, resetPassword);
 router.post("/logout", authenticate, logOut);
