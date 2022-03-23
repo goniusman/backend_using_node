@@ -18,7 +18,8 @@ const {
   forgotPassword,
   resetPassword,
   resend,
-  updateProfile
+  updateProfile,
+  deleteUser
 } = require("../controllers/userController");
 
 const upload = require("../utils/upload");
@@ -32,6 +33,7 @@ router.put("/profile-picture", authenticate, upload.single("profile_picture"), i
 router.put("/update-profile", authenticate, updateProfile );
 router.post("/forgot-password", authenticate, forgotPassword);
 router.put("/reset-password/:token/:id", isResetTokenValid, resetPassword);
+router.delete("/delete/:id", authenticate, deleteUser);
 router.post("/logout", authenticate, logOut);
 
 module.exports = router;

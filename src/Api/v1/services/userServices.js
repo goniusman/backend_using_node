@@ -344,6 +344,25 @@ module.exports = {
         .status(500)
         .json({ success: false, message: "server error, try after some time", error });
     }
+  },
+
+
+  deleteUser(res, id){
+    User.findById(id)
+      .then((u)=> {
+        if(u != null){
+          User.findByIdAndDelete(u._id)
+            .then(d => {
+              return res.status(200).json({success: true, message: "deleted user successfully"})
+            })
+            .catch(err => serverError(res, err))
+        }else{
+          return res.status(200).json({success: true, message: "user not found"})
+        }
+
+      })
+      .catch(err => serverError(res, err ))
+
   }
 
 };

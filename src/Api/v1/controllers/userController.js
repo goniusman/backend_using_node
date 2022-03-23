@@ -26,7 +26,8 @@ const {
   forgotPassword,
   resetPassword,
   resend,
-  updateProfile
+  updateProfile,
+  deleteUser
 } = require("../services/userServices");
 
 
@@ -172,6 +173,17 @@ module.exports = {
     }
 
 
+  },
+
+
+  deleteUser(req, res){
+    const {user} = req;
+    const {id} = req.params;
+    if(!user ){
+      return res.status(404).json({success: false, message: "You are not authenticated"})
+    }
+
+    return deleteUser(res,id)
   }
 
 };
