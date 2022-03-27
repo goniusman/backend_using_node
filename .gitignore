@@ -1,6 +1,8 @@
 
 /node_modules
 /logs
+/kubs
 /src/Config/Config
+/src/logger
 # /.env
 # .env

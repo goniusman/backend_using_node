@@ -94,7 +94,7 @@ module.exports = {
       return await verifyEmail(res, _id, otp); 
 
   },
-
+ 
   async forgotPassword(req, res) {
     const { email } = req.body;
     if (!email) return resourceError(res, "Please Provide a valid email");

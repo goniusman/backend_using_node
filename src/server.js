@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 5000;
 app.get("/api", (req, res) => { 
   // console.log(hello)
   infoLogger()
-  res.status(200).json({ message: "Server is running" + PORT  });
+  res.status(200).json({ message: "Server is running " + PORT  });
 });
 
 app.get('*', function(req, res){
@@ -17,7 +17,7 @@ app.get('*', function(req, res){
 });
    
 app.listen(PORT, () => {
-  console.log(process.env.NODE_ENV) 
+  // console.log(process.env.NODE_ENV) 
   
   if(process.env.NODE_ENV !== "production"){
     localData();

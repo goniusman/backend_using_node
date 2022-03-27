@@ -13,6 +13,7 @@ const multer = require("multer");
 const swaggerUi = require("swagger-ui-express");
 
 const swaggerDocument = require("./swagger.json");
+const errorHandler = require("./errorHandler");
 const { infoLogger, errorLogger} = require("./logger");
 require("./passport")(passport);
 const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
@@ -70,7 +71,8 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(handleError)
 app.use(handleRequest)
 
-
+// global error handler
+app.use(errorHandler);
 
 module.exports = app;
 

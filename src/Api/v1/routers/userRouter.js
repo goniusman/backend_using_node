@@ -24,7 +24,7 @@ const {
 
 const upload = require("../utils/upload");
 
-router.get("/all", allUser);
+router.get("/all", authenticate, allUser);
 router.post("/register", validateUserSignUp, userVlidation, register);
 router.post("/login", validateUserSignIn, userVlidation, login);
 router.post("/resend", authenticate, resend);
