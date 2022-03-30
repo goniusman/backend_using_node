@@ -25,8 +25,8 @@ const mongoErrorTransport = (uri) => new winston.transports.MongoDB({
 const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
 const elasticsearchOptions = {
     level: 'info',
-    clientOpts: { node: `https://${HOST}:9200` },
-    indexPrefix: 'log-BackendNode'
+    clientOpts: { node: `http://${HOST}:9200` },
+    indexPrefix: 'log-backendnode'
 };
 const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
 

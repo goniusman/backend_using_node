@@ -20,6 +20,7 @@ const {
   login,
   register,
   allUser,
+  getSingleUser,
   imageUpload,
   logOut,
   verifyEmail,
@@ -57,6 +58,11 @@ module.exports = {
       }
     });
 
+  },
+
+  async getSingleUser(req,res){
+    const {_id} = req.user
+    return await getSingleUser(res, _id)
   },
 
   async register(req, res) {

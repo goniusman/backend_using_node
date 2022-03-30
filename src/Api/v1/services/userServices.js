@@ -52,6 +52,20 @@ module.exports = {
   
   },
 
+  async getSingleUser(res, id){
+    User.findById(id)
+      .then(user=>{ 
+        if(!user){
+          return res.status(404).json({success: false, message: "user not found!"})
+        }else{ 
+          const { password, tokens, __v, ...userwithoutpass} = user._doc;
+          // console.log(userwithoutpass)
+          return res.status(200).json({success: true, user: userwithoutpass})
+        }
+      })
+      .catch(err => resourceError(res, err.message))
+  },
+
   async register({name, email, role, username, password, confirmPassword}, res) {
     
       await User.findOne({ email })
@@ -87,7 +101,9 @@ module.exports = {
             }, function(err, info) {
               if (err) {
                 // console.log("this is error")
+
                 console.log(err)
+                return res.status(200).json({ success: false, message: "Email Not Send!", error: err });
               } else {
                 // console.log("this is info")
                 console.log(info);
@@ -100,7 +116,7 @@ module.exports = {
                 // console.log(user);
                 return res.status(200).json({
                   success: true,
-                  message: "User Created Successfully",
+                  message: "User Created Successfully! Please Verified Mail",
                   user: user,
                 });
               })
@@ -297,7 +313,9 @@ module.exports = {
   async resend(res, email, id){
 
     const token = await VToken.findOne({ owner: id });
-    await VToken.findByIdAndDelete(token._id);
+    if(token){
+      await VToken.findByIdAndDelete(token._id);
+    }
 
 
     var otp = generateOTP();
@@ -315,18 +333,26 @@ module.exports = {
       to: email,
       subject: "Verify Your Email Account",
       html: generateHTMLTemplate(otp),
-    }, function(err, info) {
+    }
+    
+    , function(err, info) {
       if (err) {
         // console.log("this is error")
-        // console.log(err)
-        return res.status(500).json({ success: false, message: "Resend Email Not Working!" });
+        console.log(err)
+        return res.status(200).json({ success: false, message: "Resend Email Not Working!", error: err });
       } else {
         // console.log("this is info")
-        // console.log(info);
-        return res.status(500).json({ success: true, message: "Email Send Successfully!" });
+        console.log(info);
+        // return res.status(200).json({ success: true, message: "Email Send Successfully!" });
      
       }
-    });
+    }
+    
+    );
+
+    return res.json({ success: true, message: "Email Send Successfully! please check" });
+
+  
   },
 
   async updateProfile(res, user, { name, email, username}){
