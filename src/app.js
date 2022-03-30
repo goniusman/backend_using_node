@@ -16,7 +16,7 @@ const swaggerDocument = require("./swagger.json");
 const errorHandler = require("./errorHandler");
 const { infoLogger, errorLogger} = require("./logger");
 require("./passport")(passport);
-const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
+const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
 const {handleRequest,handleError } = require("./Api/v1/utils/error")
 
 // for dot env

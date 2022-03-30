@@ -22,13 +22,13 @@ const mongoErrorTransport = (uri) => new winston.transports.MongoDB({
 });
 
 
-const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
-const elasticsearchOptions = {
-    level: 'info',
-    clientOpts: { node: `https://${HOST}:9200` },
-    indexPrefix: 'log-BackendNode'
-};
-const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
+// const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
+// const elasticsearchOptions = {
+//     level: 'info',
+//     clientOpts: { node: `http://${HOST}:9200` },
+//     indexPrefix: 'log-backendbode'
+// };
+// const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
 
 
 const infoTransport = new (winston.transports.DailyRotateFile)(
@@ -63,7 +63,7 @@ module.exports.infoLogger = () => expressWinston.logger({
   transports: [
       // new winston.transports.Console(),
       infoTransport,
-      esTransport,
+      // esTransport,
     //   new winston.transports.Console({
     //     json: true,
     //     colorize: true
@@ -80,7 +80,7 @@ module.exports.errorLogger = (uri) => expressWinston.errorLogger({
       // new winston.transports.Console(),
       mongoErrorTransport(uri),
       errTransport,
-      esTransport,
+      // esTransport,
       // new winston.transports.Console({
       //   json: true,
       //   colorize: true 
