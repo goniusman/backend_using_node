@@ -17,7 +17,8 @@ const {
   remove,
   toogleUpdate,
   searchQuery,
-  imageUpload
+  imageUpload,
+  getPostByCategory
 } = require("../services/blogServices");
 
 
@@ -90,7 +91,7 @@ module.exports = {
         });
       } else { 
 
-         await getAll(res)
+         return await getAll(res)
       }
     });
   },
@@ -115,6 +116,28 @@ module.exports = {
 
       }
     });
+  },
+
+  async getPostByCategory(req, res){
+    const {category, qty} = req.params
+    let q = qty ? Number(qty) : 0
+
+    infoLogger()
+    redisclient().get(`posts_by_${category}`, async (err, jobs) => {
+      if (err) throw err;
+ 
+      if (jobs) {
+        return res.json({ 
+          post: JSON.parse(jobs),
+          message: "post by category retrived from the cache",
+          success: true
+        });
+      } else { 
+
+        return await getPostByCategory(res, category, q)
+      }
+    });
+
   },
 
   async update(req, res) {

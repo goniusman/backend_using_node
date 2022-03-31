@@ -10,12 +10,14 @@ const {
   remove,
   toogleUpdate,
   searchQuery,
-  imageUpload
+  imageUpload,
+  getPostByCategory
 } = require("../controllers/blogController");
 
 router.post("/", create); 
 router.get("/", getAll);
 router.get('/:id', getSinglePost);
+router.get('/category/:category/:qty?', getPostByCategory);
 router.put("/:id", update);
 router.post("/search/:query",  searchQuery);
 router.put("/toggle/:id", authenticate, toogleUpdate);

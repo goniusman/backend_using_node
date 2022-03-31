@@ -45,8 +45,8 @@ module.exports = {
                 message: "No Post Found",
               });
             } else {
-              // delete posts.description;
-              const { description, image } = posts;
+              // delete posts.description and image and use withoutDescImage;
+              // const { description, image, ...withoutDescIamge } = posts; 
 
               // return res.status(200).json(posts);
               redisclient().setex("posts", 600, JSON.stringify(posts));
@@ -59,7 +59,7 @@ module.exports = {
   
   },
 
-  getSinglePost(res, id) {
+  async getSinglePost(res, id) {
     // let { id } = req.params;
     // console.log(req.params)
     // // console.log('i am single')
@@ -72,7 +72,7 @@ module.exports = {
     //       message: "data retrieved from the cache",
     //     });
     //   } else {
-        Post.findById(id)
+      await  Post.findById(id)
           .then((post) => {
             if (!post) {
               return res.status(200).json({
@@ -86,6 +86,18 @@ module.exports = {
           .catch((error) => serverError(res, error));
     //   }
     // });
+  },
+
+  async getPostByCategory(res, cat, qty){
+    await Post.find({category: cat}).limit(qty)
+      .then(cats => {
+        if(cats.length !== 0){
+          redisclient().setex(`posts_by_${cat}`, 600, JSON.stringify(cats));
+          return res.status(200).json({success: true, post: cats})
+        }else{
+          return res.status(200).json({success: true, message: "No post found on this category"})
+        }
+      })
   },
 
   update(res,id, title,description,category,tag) {
