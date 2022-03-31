@@ -48,14 +48,16 @@ const categoryRouter = require("./Api/v1/routers/categoryRouter");
 const commentRouter = require("./Api/v1/routers/commentRouter");
 const swaggerRouter = require("./Api/v1/routers/swagger");
 
-if ( process.env.ENVIRONMENT != "TEST" )
+if ( process.env.ENVIRONMENT != "TEST" ){
       app.use(infoLogger());
+}
 
 
+ 
 app.use("/api/user/", userRouter);
 app.use("/api/blog/", blogRouter);
+app.use("/api/comment/", commentRouter);
 app.use("/api/category/", categoryRouter);
-app.use("/api/post/single-post/", commentRouter);
 app.use("/api-docs", swaggerRouter);
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

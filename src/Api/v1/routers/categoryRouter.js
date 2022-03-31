@@ -1,15 +1,15 @@
 const router = require('express').Router()
 const { create, getAll, remove, update, getSingleCategory } = require('../controllers/categoryController')
-// const authenticate = require('../authenticket')
+const authenticate = require("../../../authenticate");
 
-router.post('/', create)
+router.post('/', authenticate, create)
+ 
+router.get('/', authenticate, getAll)
 
-router.get('/', getAll)
+router.get('/:id', authenticate, getSingleCategory)
 
-router.get('/:id', getSingleCategory)
+router.put('/:id', authenticate, update)
 
-router.put('/:id', update)
-
-router.delete('/:id', remove)
+router.delete('/:id', authenticate, remove)
 
 module.exports = router

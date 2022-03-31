@@ -9,15 +9,15 @@ const { create, getAll, remove, update, getSingleCategory } = require('../servic
 
 module.exports = {
 
-  create(req, res) {
+  async create(req, res) {
     let { category, description } = req.body;
 
-    let validate = categoryValidator({ category, description });
+    let validate = categoryValidator({ category });
 
     if (!validate.isValid) {
       return res.status(400).json(validate.error);
     } else {
-      return create(res,category, description);
+      return await create(res,category, description);
     }
   },
  
@@ -51,10 +51,10 @@ module.exports = {
     return getSingleCategory(res,id)
   },
 
-  update(req, res) {
+  async update(req, res) {
     let { id } = req.params;
     let { category, description } = req.body;
-    return udpate(res, category, description,id)
+    return await update(res, category, description,id)
   },
 
   remove(req, res) {

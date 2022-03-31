@@ -4,5 +4,5 @@
 /kubs
 /src/Config/Config
 /src/logger
-# /.env
-# .env
+/.env
+.env

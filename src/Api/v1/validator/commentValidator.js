@@ -1,8 +1,11 @@
-const validate = comment => {
+const validate = ({comment, postId}) => {
     let error = {}
 
-    if(!comment.comment){
+    if(!comment){
         error.comment = "Please Provide Comment"
+    }
+    if(!postId){
+        error.postId = "Please Provide PostId"
     }
     return{
         error,

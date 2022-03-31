@@ -7,38 +7,40 @@ const { create, getAll, remove, getSingleComment, update} = require("../services
 
 module.exports = {
   
-  create(req, res) {
-    let { name, email, website, comment, id } = req.body;
+  async create(req, res) {
+    let { comment, postId } = req.body;
+    let {_id : userId} = req.user
 
-    let validate = commentValidator({ name, email, comment });
+    let validate = commentValidator({ comment, postId });
 
     if (!validate.isValid) {
-      return res.status(400).json(validate.error);
+      return await res.status(400).json(validate.error);
     } else {
-     return create(res, name, email, website, comment,  id )
+      return await create(res, comment, postId, userId )
     }
   },
 
-  getAll(req, res) {
+  async getAll(req, res) {
     // for specific post
-    let _id = req.params.id;
+    let id = req.params.id;
 
-    return getAll(res,_id)
+    return await getAll(res,id)
   },
 
   getSingleComment(req, res) {
-    let { commentId } = req.params;
+    let id = req.params.id;
    return getSingleComment(res,commentId)
   },
 
-  update(req, res) {
-    let { commentId } = req.params;
-   return update(res, commentId)
+  async update(req, res) {
+    let id = req.params.id;
+    let {comment} = req.body
+   return await update(res, comment, id)
   },
 
-  remove(req, res) {
-    let { commentId } = req.params;
-    return remove(res, commentId)
+  async remove(req, res) {
+    let { cid, pid } = req.params;
+    return await remove(res, cid, pid)
   },
 
 };
