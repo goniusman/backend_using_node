@@ -3,12 +3,12 @@ const authenticate = require("../../../authenticate");
 const { create, getAll, remove, update } = require("../controllers/commentController");
 // const authenticate = require('../authenticket')
 
-router.post("/", create);
+router.post("/", authenticate, create);
 
-router.get("/:id", getAll);
+router.get("/:id", authenticate, getAll);
 
-router.delete("/:id", remove);
+router.delete("/:cid/:pid", authenticate, remove);
 
-router.put("/:id", update);
+router.put("/:id", authenticate, update);
 
 module.exports = router;

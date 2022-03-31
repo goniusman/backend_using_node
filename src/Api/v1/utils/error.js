@@ -7,7 +7,7 @@ module.exports = {
     console.log(error);
     errorLogger(localUri, error)
      return res.json({
-      "error": error,
+      "error": error.message,
       "message": "Server Error Occurred",
     });
   },

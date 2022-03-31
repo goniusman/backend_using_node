@@ -6,14 +6,14 @@ const categoryValidator = require("../validator/categoryValidator");
 
 module.exports = {
 
-  create(res,category, description) {
+ async create(res,category, description) {
 
-      Category.findOne({ category }).then((cat) => {
+      await Category.findOne({ category }).then( async (cat) => {
         if (cat) {
           return resourceError(res, "Category Already Exist");
         }
         let categories = new Category({ category, description });
-        categories
+       await categories
           .save()
           .then((cat) => {
             return res.json({
@@ -33,7 +33,7 @@ module.exports = {
         .then((cats) => {
           if (cats.length === 0) {
             return res.status(200).json({
-              message: "No Cat Found",
+              message: "No Category Found",
             });
           } else {
             // console.log('from database')
@@ -75,7 +75,7 @@ module.exports = {
         Category
           .findOneAndUpdate({ _id: id }, { $set: cat }, { new: true })
           .then((result) => {
-            return res.status(200).json({
+            return res.status(201).json({
               message: "Updated Successfully",
               ...result._doc,
             });

@@ -4,17 +4,9 @@ const Schema = mongoose.Schema;
 
 const CommentSchema = new Schema(
   {
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    website: {
-      type: String,
-      required: false,
+    userId: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
     comment: {
       type: String,

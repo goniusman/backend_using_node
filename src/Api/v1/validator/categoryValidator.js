@@ -4,9 +4,9 @@ const validate = category => {
     if(!category.category){
         error.category = "Please Provide category"
     }
-if(!category.description){
-        error.description = "Please Provide description"
-    }
+// if(!category.description){
+//         error.description = "Please Provide description"
+//     }
     
     return{
         error,
