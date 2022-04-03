@@ -16,7 +16,7 @@ const swaggerDocument = require("./swagger.json");
 const errorHandler = require("./errorHandler");
 const { infoLogger, errorLogger} = require("./logger");
 require("./passport")(passport);
-const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
+const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const {handleRequest,handleError } = require("./Api/v1/utils/error")
 
 // for dot env
@@ -59,7 +59,6 @@ app.use("/api/blog/", blogRouter);
 app.use("/api/comment/", commentRouter);
 app.use("/api/category/", categoryRouter);
 app.use("/api-docs", swaggerRouter);
-
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // if(process.env.NODE_ENV === 'production'){
@@ -69,29 +68,14 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 //     })
 // }
 
-// app.listen(PORT,  database.liveData() );
+
 app.use(handleError)
 app.use(handleRequest)
 
 // global error handler
 app.use(errorHandler);
 
+
+
+
 module.exports = app;
-
-// const logger = winston.createLogger({
-//   level: 'info',
-//   format: winston.format.json(),
-//   defaultMeta: { service: 'user-service' },
-//   transports: [
-//     new winston.transports.File({ filename: 'error.log', level: 'error' }),
-//     new winston.transports.File({ filename: 'combined.log' }),
-//   ],
-// });
-
-// // if (process.env.NODE_ENV !== 'production') {
-//   logger.add(new winston.transports.Console({
-//     format: winston.format.simple(),
-//   }));
-// // }
-
-// logger.log('info', 'test message %s', 'my string');

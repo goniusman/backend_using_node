@@ -36,7 +36,7 @@ module.exports = {
           // return res.status(200).json({
           //   message: "No User Found",
           // });
-          return res.json({ success: true, users: "No Users Founud" });
+          return res.json({ success: false, users: "No Users Founud" });
         } else {
           // delete posts.description;
           // const { description, image } = posts;

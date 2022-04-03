@@ -1,11 +1,12 @@
-const { localUri } = require("../../../Config/DatabaseConfig");
-const { errorLogger } = require("../../../logger");
+const { localUri, liveUri } = require("../../../Config/DatabaseConfig");
+const { errorLogger, customErrLogger } = require("../../../logger");
 
+let correlationId ;
 
 module.exports = {
   serverError(res, error) {
-    console.log(error);
-    errorLogger(localUri, error)
+    // console.log(error);
+    customErrLogger.error(`this is error that your request can't handle properly${ error.message} and correlation id is ${correlationId}`)
      return res.json({
       "error": error.message,
       "message": "Server Error Occurred",
@@ -13,7 +14,7 @@ module.exports = {
   },
 
   resourceError(res, message) {
-    // errorLogger(localUri, message)
+    customErrLogger.error(`this is error that your request can't handle properly ${message} and correlation id is ${correlationId}`)
      res.json({ "success": false, "message": message });
     // return res.status(400).json({
     //   message,
@@ -21,7 +22,7 @@ module.exports = {
   },
 
   handleRequest(req, res, next) {
-    let correlationId = req.headers['x-correlation-id'];
+    correlationId = req.headers['x-correlation-id'];
     if (!correlationId) {
         correlationId = Date.now().toString();
         req.headers['x-correlation-id'] = correlationId;
@@ -33,16 +34,18 @@ module.exports = {
   },
 
   handleError(err, req, res, next) {
-    // let code = 500;
+    let code = 500;
     // if (err instanceof GeneralError) {
     //     code = err.getCode();
     // }
 
-    let correlationId = req.headers['x-correlation-id'];
-    return res.status(500).json({
+    correlationId = req.headers['x-correlation-id'];
+    customErrLogger.error(`User not found. correlation id is - ${correlationId} and correlation id is ${correlationId}`)
+    return res.status(code).json({
         correlationId: correlationId, 
         message: "internal server errro"
     });
+    
   }
 };
 

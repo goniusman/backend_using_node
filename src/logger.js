@@ -59,6 +59,20 @@ const errTransport = new (winston.transports.DailyRotateFile)(
   }
 )
 
+const cusErrTransport = new (winston.transports.DailyRotateFile)(
+  {
+    filename: 'logs/cusErr/log-%DATE%.log', 
+    datePattern: 'yyyy-MM-DD',
+    // name: 'file',
+    colorize: true, 
+    json: true,
+    maxsize: 50 * 1024 * 1024,
+    maxFiles: 10,
+    zippedArchive: true
+}
+)
+
+
 module.exports.infoLogger = () => expressWinston.logger({
   transports: [
       // new winston.transports.Console(),
@@ -73,7 +87,7 @@ module.exports.infoLogger = () => expressWinston.logger({
   meta: true, 
   msg: getMessage 
 });
-
+ 
 
 module.exports.errorLogger = (uri) => expressWinston.errorLogger({
   transports: [
@@ -95,7 +109,18 @@ module.exports.errorLogger = (uri) => expressWinston.errorLogger({
 });
 
 
-
-
+module.exports.customErrLogger =  winston.createLogger({
+  // level: 'error',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    cusErrTransport,
+    // mongoErrorTransport("mongodb://localhost:27017")
+    // new winston.transports.File({ filename: 'combined.log' }),
+  ],
+  // format: winston.format.combine(winston.format.colorize(), winston.format.json()),
+  meta: true, 
+  // msg: getMessage 
+});
 
 

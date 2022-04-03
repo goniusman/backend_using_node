@@ -1,14 +1,14 @@
 const app = require("./app");
-const { liveData, localData, localUri } = require("./Config/DatabaseConfig");
+const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const { errorLogger, infoLogger } = require("./logger");
-const { CronJobs } = require("./cron")
+const { CronJobs } = require("./cron");
 
-// console.log(app)
+
+
 const PORT = process.env.PORT || 5000;
 
 app.get("/api", (req, res) => { 
-  // console.log(hello)
-  infoLogger()
+    // console.log(nice)
   res.status(200).json({ message: "Server is running " + PORT  });
 });
 
@@ -17,26 +17,23 @@ app.get('*', function(req, res){
 });
    
 app.listen(PORT, () => {
-  console.log(process.env.NODE_ENV) 
-     
-  if(process.env.NODE_ENV !== "production"){
+
+  if(process.env.NODE_ENV == undefined || process.env.NODE_ENV !== "production"){
     localData();
   }else{
     liveData(); 
   }
-  // console.log(test.uri)
-  if ( process.env.NODE_ENV !== "production" ) {
-    app.use(errorLogger(localUri)); 
+
+  if(process.env.NODE_ENV == undefined || process.env.NODE_ENV !== "production"){
+    app.use(errorLogger(localUri));
   }else{
-    app.use(errorLogger(localUri)); 
+      app.use(errorLogger(liveUri));
   }
-  
+
   // CronJobs()
-  // console.log()
-  infoLogger()
   console.log("app is running on port ", PORT);
 });
+  
  
  
 
-// console.log(app)

@@ -50,9 +50,9 @@ module.exports = {
 
               // return res.status(200).json(posts);
               redisclient().setex("posts", 600, JSON.stringify(posts));
-
+              
               return res.json({ success: true, post: posts  });
-            }
+            } 
           })
           .catch((error) => serverError(res, error));
  
@@ -95,7 +95,7 @@ module.exports = {
           redisclient().setex(`posts_by_${cat}`, 600, JSON.stringify(cats));
           return res.status(200).json({success: true, post: cats})
         }else{
-          return res.status(200).json({success: true, message: "No post found on this category"})
+          return res.status(200).json({success: false, message: "No post found on this category"})
         }
       })
   },
@@ -127,6 +127,7 @@ module.exports = {
       .then((result) => {
         if (result == null) {
           return res.status(404).json({
+            success: false,
             message: "No Post Found",
           });
         } else {

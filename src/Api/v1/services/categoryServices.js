@@ -90,7 +90,7 @@ module.exports = {
     Category.findOneAndDelete({ _id: id })
       .then((result) => {
         if(result == null){
-          return res.json({success: true, message: "Category not found"})
+          return res.json({success: false, message: "Category not found"})
         }else{
           return res.status(204).json({
             message: "Deleted Successfully",

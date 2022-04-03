@@ -86,7 +86,7 @@ module.exports = {
       .then(async c => {
         console.log(c)
         if(c == null){
-          return res.status(200).json({success: true, message: "No Comment Found"})
+          return res.status(200).json({success: false, message: "No Comment Found"})
         }else{
           await Comment.findOneAndDelete({ _id: cid })
           .then( async (result) => {

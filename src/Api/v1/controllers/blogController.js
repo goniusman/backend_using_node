@@ -77,9 +77,10 @@ module.exports = {
   },
 
   async getAll(req, res) {
+
     // console.log('i am from native') 
     // winston.info('I am here this is your point post file\n')
-    infoLogger()
+    // infoLogger()
     redisclient().get("posts", async (err, jobs) => {
       if (err) throw err;
  
@@ -158,10 +159,13 @@ module.exports = {
 
   async imageUpload(req, res) {
     const { id } = req.params;
-    if (req.files === null) {
+    if (req.files === null || req.files == undefined) {
       return res.json({ message: "No file uploaded" });
     }
+ 
 
+
+    // console.log(req.files)
     const file = req.files.file;
 
     var filePath = `/uploads/` + Date.now() + `-${file.name}`;

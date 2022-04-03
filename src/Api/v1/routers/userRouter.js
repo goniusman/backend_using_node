@@ -37,5 +37,5 @@ router.post("/forgot-password", authenticate, forgotPassword);
 router.put("/reset-password/:token/:id", isResetTokenValid, resetPassword);
 router.delete("/delete/:id", authenticate, deleteUser);
 router.post("/logout", authenticate, logOut);
-
+ 
 module.exports = router;
