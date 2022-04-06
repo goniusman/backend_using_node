@@ -31,6 +31,7 @@ app.listen(PORT, () => {
   }
 
   // CronJobs()
+  // console.log('this is testing');
   console.log("app is running on port ", PORT);
 });
   
