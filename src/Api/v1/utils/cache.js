@@ -25,7 +25,7 @@ if(process.env.NODE_ENV=="production"){
     global.console.log("connected to live server");
   })
 }else{
-   host = '127.0.0.1'
+   host = process.env.REDIS_HOST || '127.0.0.1'
    redisPort = 6379
    redisPass = ""
    
