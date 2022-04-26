@@ -22,6 +22,6 @@ COPY . ./
 ENV PORT 5000
 EXPOSE $PORT
 
-CMD [ "npm", "start" ]
+# CMD [ "npm", "start" ]
 
-# CMD [ "npm", "run", "dev" ]
+CMD [ "npm", "run", "dev" ]
