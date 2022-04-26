@@ -92,7 +92,7 @@ module.exports.infoLogger = () => expressWinston.logger({
 module.exports.errorLogger = (uri) => expressWinston.errorLogger({
   transports: [
       // new winston.transports.Console(),
-      mongoErrorTransport(uri),
+//       mongoErrorTransport(uri),
       errTransport,
       // esTransport,
       // new winston.transports.Console({
