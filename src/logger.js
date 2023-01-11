@@ -22,13 +22,13 @@ const mongoErrorTransport = (uri) => new winston.transports.MongoDB({
 });
 
 
-// const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
-// const elasticsearchOptions = {
-//     level: 'info',
-//     clientOpts: { node: `http://${HOST}:9200` },
-//     indexPrefix: 'log-backendbode'
-// };
-// const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
+const HOST = process.env.ELASTICSEARCH_HOST || "localhost";
+const elasticsearchOptions = {
+    level: 'info',
+    clientOpts: { node: `http://${HOST}:9200` },
+    indexPrefix: 'log-backendbode'
+};
+const esTransport = new (ElasticsearchTransport)(elasticsearchOptions);
 
 
 const infoTransport = new (winston.transports.DailyRotateFile)(
