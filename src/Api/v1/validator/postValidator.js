@@ -1,12 +1,12 @@
 const validator = require("validator");
 
-const validate = (post) => {
+const validate = ({title, description, category, tag }) => {
   let error = {};
 
-  if (!post.title) {
+  if (!title) {
     error.title = "Please Provide Your Title";
   }
-  if (!post.description) {
+  if (!description) {
     error.description = "You didn't select any Descrioption";
   }
 
@@ -14,10 +14,10 @@ const validate = (post) => {
   //     error.image = "Please Provide Your image"
   // }
   
-  if (!post.category) {
+  if (!category) {
     error.category = "Please Provide Your category";
   }
-  if (!post.tag) {
+  if (!tag) {
     error.tag = "Please Provide Your tag";
   }
   // if (!post.author) {

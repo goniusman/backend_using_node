@@ -8,7 +8,9 @@ const { create, getAll, remove, getSingleComment, update} = require("../services
 module.exports = {
   
   async create(req, res) {
-    let { comment, postId } = req.body;
+    // console.log(req.user);
+    let { comment, id } = req.body;
+    let postId = id; 
     let {_id : userId} = req.user
 
     let validate = commentValidator({ comment, postId });

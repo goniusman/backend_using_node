@@ -2,11 +2,12 @@ const router = require('express').Router()
 const { create, getAll, remove, update, getSingleCategory } = require('../controllers/categoryController')
 const authenticate = require("../../../authenticate");
 
-router.post('/', authenticate, create)
+// router.post('/', authenticate, create)
+router.post('/',  create)
  
-router.get('/', authenticate, getAll)
+router.get('/',  getAll)
 
-router.get('/:id', authenticate, getSingleCategory)
+router.get('/:id', getSingleCategory)
 
 router.put('/:id', authenticate, update)
 

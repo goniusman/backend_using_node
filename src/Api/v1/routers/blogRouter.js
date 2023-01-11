@@ -1,6 +1,7 @@
 const router = require("express").Router({mergeParams: true});
 
 const authenticate = require("../../../authenticate");
+const {parseData} = require("../utils/commonUtility");
 // const { isAuth } = require("../middlewares/auth");
 const {
   create,
@@ -14,7 +15,8 @@ const {
   getPostByCategory
 } = require("../controllers/blogController");
 
-router.post("/", create); 
+router.post("/", authenticate, create); 
+// router.post("/", authenticate, parseData, create); 
 router.get("/", getAll);
 router.get('/:id', getSinglePost);
 router.get('/category/:category/:qty?', getPostByCategory);
