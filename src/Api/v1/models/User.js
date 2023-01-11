@@ -22,7 +22,7 @@ const userSchema = new Schema({
         type: String,
         required: false, 
         default: 'author',
-        enum: ["user", "author", "admin"]
+        enum: ["user", "author", "admin"] 
     },
     password: {
         type: String,

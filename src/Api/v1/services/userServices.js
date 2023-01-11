@@ -73,7 +73,7 @@ module.exports = {
           if (user) { 
             // console.log("Email Already Exist");
             return resourceError(res, "Email Already Exist");
-          } else {
+          } else {  
             let user = new User({
               name,
               email,
@@ -103,7 +103,7 @@ module.exports = {
                 // console.log("this is error")
 
                 console.log(err)
-                return res.status(200).json({ success: false, message: "Email Not Send!", error: err });
+                // return res.status(400).json({ success: false, message: "Email Not Send!", error: err });
               } else {
                 // console.log("this is info")
                 console.log(info);
@@ -113,11 +113,12 @@ module.exports = {
             await user
               .save()
               .then((user) => {
-                // console.log(user);
+                console.log(user);
+                const {password, confirmPassword, __v,createdAt,updatedAt, ...userwithoutpass} = user._doc;
                 return res.status(200).json({
                   success: true,
                   message: "User Created Successfully! Please Verified Mail",
-                  user: user,
+                  user: userwithoutpass,
                 });
               })
               .catch((error) => serverError(res, error));
@@ -236,9 +237,10 @@ module.exports = {
               name: user.name,
               email: user.email,
               role: user.role,
+              image : user.image
             },
             "SECRET",
-            { expiresIn: "1d" }
+            { expiresIn: "5d" }
           );
 
           let oldTokens = user.tokens || [];
@@ -363,7 +365,7 @@ module.exports = {
         { new: true }
       );
 
-      return res.json({ success: true, message: "Your profile has been uploaded!" });
+      return res.json({ success: true, user: updatedUser, message: "Your profile has been updated!" });
 
     } catch (error) {
       return res

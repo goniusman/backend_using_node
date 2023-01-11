@@ -15,7 +15,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const errorHandler = require("./errorHandler");
 const { infoLogger, errorLogger} = require("./logger");
-require("./passport")(passport);
+
 const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
 const {handleRequest,handleError } = require("./Api/v1/utils/error")
 
@@ -25,9 +25,10 @@ const app = express();
 app.use(cors());
 
 //body parser when submited
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+require("./passport")(passport);
 app.use(handleRequest);
 
 // // default morgan packages without winston.
@@ -52,14 +53,13 @@ if ( process.env.ENVIRONMENT != "TEST" ){
       app.use(infoLogger());
 }
 
-
- 
 app.use("/api/user/", userRouter);
 app.use("/api/blog/", blogRouter);
 app.use("/api/comment/", commentRouter);
 app.use("/api/category/", categoryRouter);
 app.use("/api-docs", swaggerRouter);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/api/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 // if(process.env.NODE_ENV === 'production'){
 //     app.use(express.static('client/build'))

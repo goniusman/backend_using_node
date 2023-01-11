@@ -7,15 +7,15 @@ module.exports = {
   serverError(res, error) {
     // console.log(error);
     customErrLogger.error(`this is error that your request can't handle properly${ error.message} and correlation id is ${correlationId}`)
-     return res.json({
-      "error": error.message,
-      "message": "Server Error Occurred",
+     return res.status(400).json({
+      "success": false,
+      "message": error.message,
     });
   },
 
   resourceError(res, message) {
     customErrLogger.error(`this is error that your request can't handle properly ${message} and correlation id is ${correlationId}`)
-     res.json({ "success": false, "message": message });
+     res.status(400).json({ "success": false, "message": message });
     // return res.status(400).json({
     //   message,
     // });

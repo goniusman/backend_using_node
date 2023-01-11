@@ -33,7 +33,10 @@ module.exports = {
       comments,
       isPublished
     } = req.body;
-    // console.log(req.headers)   
+
+    console.log(req.body)
+
+    // fs.writeFileSync('./router.jpg', JSON.stringify(image, null, 2) , 'utf-8');
 
     // let { name } = req.user;
 
@@ -43,6 +46,7 @@ module.exports = {
       return res.status(400).json(validate.error);
     } else {
 
+      // console.log(req.body.file)
        ////if image have than uploaded
       if (req.files != null) {
         const dir = "./uploads";
@@ -56,7 +60,7 @@ module.exports = {
         let file = req.files.file;
 
         var filePath = `/uploads/` + Date.now() + `-${file.name}`;
-
+console.log(filePath)
         const root = path.resolve("./");
         file.mv(`${root}/uploads/` + Date.now() + `-${file.name}`, (err) => {
           if (err) {

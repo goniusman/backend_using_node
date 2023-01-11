@@ -119,7 +119,7 @@ module.exports = {
   async login(req, res) {
     let { email, password } = req.body;
 
-    let validate = loginValidator({ email, password });
+    let validate = loginValidator({ email, password });  
 
     if (!validate.isValid) return res.status(400).json({success: false, message: "Empty Value", data: validate.error});
     
@@ -134,7 +134,8 @@ module.exports = {
     // if (typeof req.file.path  == "undefined") {
     //     return res.status(400).json({success: "false", file: "No file uploaded" });
     // }
-    const filePath = req.file.path
+    const filePath = req?.file?.path
+    // console.log(filePath)
     return await imageUpload(res, user, filePath)
   },
 
@@ -157,7 +158,7 @@ module.exports = {
   async updateProfile(req, res){
     const { user } = req;
 
-    let { name, username, email  } = req.body;
+    let { name, username="goni", email  } = req.body;
     // console.log(req.body);
     let validate = updateValidator({
       email,

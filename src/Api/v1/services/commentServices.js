@@ -19,7 +19,7 @@ module.exports = {
               await post
                 .save()
                 .then((post) => {
-                  return res.status(201).json({success: true, message: "Comment Saved Successfully", conmment: comment});
+                  return res.status(201).json({success: true, message: "Comment Saved Successfully", comment: comment});
                 })
                 .catch((error) => serverError(res, error));
             })
@@ -34,7 +34,7 @@ module.exports = {
     await Comment.find({ postId: _id })
       .then( (comments) => {
         if (comments.length === 0) {
-          return res.status(200).json({success: false, message: "No Comments for this post"});
+          return res.status(200).json({success: true, message: "No Comments for this post", comments:[]});
         } else {
           return res.status(200).json({success: true, comments});
         }
