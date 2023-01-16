@@ -31,10 +31,15 @@ module.exports = {
       category,
       tag,
       comments,
+      author,
       isPublished
     } = req.body;
 
-    console.log(req.body)
+    if(author == ""){
+      author = 'goni'
+    }
+
+    // console.log(req.body) 
 
     // fs.writeFileSync('./router.jpg', JSON.stringify(image, null, 2) , 'utf-8');
 
@@ -60,7 +65,7 @@ module.exports = {
         let file = req.files.file;
 
         var filePath = `/uploads/` + Date.now() + `-${file.name}`;
-console.log(filePath)
+
         const root = path.resolve("./");
         file.mv(`${root}/uploads/` + Date.now() + `-${file.name}`, (err) => {
           if (err) {
@@ -75,7 +80,7 @@ console.log(filePath)
         });
       }
 
-      return await create(res, {title,description,category,tag,author: 'default',isPublished}, filePath)
+      return await create(res, {title,description,category,tag,author,isPublished}, filePath)
       
     }
   },
@@ -87,7 +92,7 @@ console.log(filePath)
     // infoLogger()
     redisclient().get("posts", async (err, jobs) => {
       if (err) throw err;
- 
+//  console.log(jobs);
       if (jobs) {
         return res.json({ 
           post: JSON.parse(jobs),
@@ -147,7 +152,8 @@ console.log(filePath)
 
   async update(req, res) {
     let { id } = req.params;
-    let { title, description, category, tag } = req.body;
+    let { title, description, category, tag, post , postId } = req.body;
+    id = postId
       return await update(res,id, title,description,category,tag) 
   },
 

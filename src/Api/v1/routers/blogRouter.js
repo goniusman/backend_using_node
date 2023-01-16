@@ -17,10 +17,10 @@ const {
 
 router.post("/", authenticate, create); 
 // router.post("/", authenticate, parseData, create); 
-router.get("/", getAll);
+router.get("/", authenticate,  getAll); 
 router.get('/:id', getSinglePost);
 router.get('/category/:category/:qty?', getPostByCategory);
-router.put("/:id", update);
+router.put("/:id", authenticate, update);
 router.post("/search/:query",  searchQuery);
 router.put("/toggle/:id", authenticate, toogleUpdate);
 router.delete("/:id", remove);

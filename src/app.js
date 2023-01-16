@@ -30,6 +30,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 require("./passport")(passport);
 app.use(handleRequest);
+app.use(fileUpload());
 
 // // default morgan packages without winston.
 // var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })

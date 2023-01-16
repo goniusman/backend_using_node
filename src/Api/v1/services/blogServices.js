@@ -21,7 +21,7 @@ module.exports = {
         image: filePath || "null",
         isPublished,
       });
-
+      redisclient().expireat('posts', 10)
       post
         .save()
         .then((post) => {
@@ -110,6 +110,9 @@ module.exports = {
         post.tag = tag;
         Post.findOneAndUpdate({ _id: id }, { $set: post }, { new: true })
           .then((result) => {
+
+            redisclient().expireat('posts', 10)
+
             return res.json({
               success: true,
               message: "Post Updated Successfully",
@@ -131,6 +134,7 @@ module.exports = {
             message: "No Post Found",
           });
         } else {
+          redisclient().expireat('posts', 10)
           return res.json({
             success: true,
             message: "Post deleted successfully",
