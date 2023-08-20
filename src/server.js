@@ -1,5 +1,6 @@
 const app = require("./app");
-const { liveData, localData, localUri, liveUri } = require("./Config/DatabaseConfig");
+const { DB, Dburl } = require("./Config/DatabaseConfig");
+const Redis = require("./Api/v1/utils/cache")
 const { errorLogger, infoLogger } = require("./logger");
 const { CronJobs } = require("./cron");
 
@@ -16,19 +17,14 @@ app.get('*', function(req, res){
   res.status(404).send('what???'); 
 });
    
+
 app.listen(PORT, () => {
 
-  if(process.env.NODE_ENV == undefined || process.env.NODE_ENV !== "production"){
-    localData();
-  }else{
-    liveData(); 
-  }
+  DB()
+  app.use(errorLogger(Dburl()));
+  Redis()
 
-  if(process.env.NODE_ENV == undefined || process.env.NODE_ENV !== "production"){
-    app.use(errorLogger(localUri));
-  }else{
-      app.use(errorLogger(liveUri));
-  }
+
 
   // CronJobs()
   // console.log('this is testing');

@@ -7,7 +7,7 @@
   "editor.formatOnSave": true,
   "[javascript]": {
     "editor.formatOnSave": false,
-    "editor.defaultFormatter": null
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
   },
   "[javascriptreact]": {
     "editor.formatOnSave": false,
