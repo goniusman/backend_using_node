@@ -6,6 +6,9 @@ services:
   backendwnode:
     build:
       context: .
+      # container_name: backendwnode
+      # ports:
+      #   - "5000:5000"
       args:
         NODE_ENV: development
     volumes:

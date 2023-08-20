@@ -16,7 +16,8 @@ jobs:
       with:
         node-version: 16
     - run: npm ci
-    - run: npm run build --if-present
+    # - run: npm run build --if-present
+    - run: npm start --if-present
     - name: Build and Push Docker Image
       uses: mr-smithers-excellent/docker-build-push@v4
       with:
