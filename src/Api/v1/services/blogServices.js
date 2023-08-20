@@ -41,16 +41,16 @@ module.exports = {
           // .limit(2)
           .then((posts) => {
             if (posts.length === 0) {
-              return res.status(200).json({
-                message: "No Post Found",
-              });
+              return res.status(200).json(
+              { success: true, post: [] ,  message: "No Post Found" }
+              );
             } else {
               // delete posts.description and image and use withoutDescImage;
               // const { description, image, ...withoutDescIamge } = posts; 
 
               // return res.status(200).json(posts);
               redisclient().setex("posts", 600, JSON.stringify(posts));
-              
+              // console.log(posts); 
               return res.json({ success: true, post: posts  });
             } 
           })

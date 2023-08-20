@@ -96,7 +96,7 @@ module.exports = {
       if (jobs) {
         return res.json({ 
           post: JSON.parse(jobs),
-          message: "data retrieved from the cache",
+          message: "posts retrieved from the cache",
           success: true
         });
       } else { 
@@ -115,7 +115,7 @@ module.exports = {
       if (jobs) {
        return res.status(200).send({
           data: JSON.parse(jobs),
-          message: "data retrieved from the cache",
+          message: "post retrieved from the cache",
           success: true
         });
       } else {
