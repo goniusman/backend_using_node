@@ -7,6 +7,18 @@
   "produces": ["application/json"],
   "host": "localhost:5000",
   "basePath": "/api",
+  "securityDefinitions": {
+      "Bearer": {
+          "type": "apiKey",
+          "name": "Authorization",
+          "in": "header",
+          "description": 
+            "Enter the token with the `Bearer: ` prefix, e.g."
+      }
+  
+  },
+
+
   "paths": {
     "/blog": {
       "get": {
@@ -198,7 +210,7 @@
       }
     },
 
-    "/user": {
+    "/user/register": {
       "post": {
         "summary": "Create user",
         "description": "This can only be done by the logged in user.",
@@ -207,13 +219,32 @@
         "operationId": "createUser",
         "parameters": [
           {
-            "in": "body",
-            "name": "body",
-            "description": "Created user object",
-            "required": false,
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
+            "in": "name",
+            "name": "name",
+            "description": "Pet object that needs to be added to the store",
+            "required": true
+          }, {
+            "in": "username",
+            "name": "username",
+            "description": "Pet object that needs to be added to the store",
+            "required": true
+          },{
+            "in": "email",
+            "name": "email",
+            "description": "Pet object that needs to be added to the store",
+            "required": true
+          },{
+            "in": "password",
+            "name": "password",
+            "description": "Pet object that needs to be added to the store",
+            "required": true
+
+          },{
+            "in": "confirmPassword",
+            "name": "confirmPassword",
+            "description": "Pet object that needs to be added to the store",
+            "required": true
+
           }
         ],
         "responses": {

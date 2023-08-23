@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "start": "set NODE_ENV=production && node src/server.js --watch",
+    "start": "set NODE_ENV=production && node src/server.js",
     "dev": "set NODE_ENV=development && nodemon -L src/server.js",
     "test": "jest --config=jest.config.js --watch --detectOpenHandles",
     "lint": "yarn add -D prettier && yarn add -D babel-eslint && npx install-peerdeps --dev eslint-config-airbnb && yarn add -D eslint-config-prettier eslint-plugin-prettier"

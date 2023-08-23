@@ -3,7 +3,8 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 const User = require('./Api/v1/models/User')
 
 const opts = {}
-opts.jwtFromRequest = ExtractJwt.fromHeader("authorization");
+// opts.jwtFromRequest = ExtractJwt.fromHeader("authorization");
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
 opts.secretOrKey = 'SECRET';
 
 module.exports = passport => {
