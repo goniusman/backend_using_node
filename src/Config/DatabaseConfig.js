@@ -19,7 +19,7 @@ module.exports = {
       dburl = process.env.MONGODB_URL
     }
     const options = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true,useCreateIndex: true };
-    mongoose.connect(dburl, options, (err, db) => {
+    mongoose.connect(`${dburl}/blog`, options, (err, db) => {
 
       if (err) {
         console.error(err);
