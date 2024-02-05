@@ -17,7 +17,7 @@ const {
 
 router.post("/", authenticate, create); 
 // router.post("/", authenticate, parseData, create); 
-router.get("/", authenticate,  getAll); 
+router.get("/",  getAll); 
 router.get('/:id', authenticate, getSinglePost);
 router.get('/category/:category/:qty?', getPostByCategory);
 router.put("/:id", authenticate, update);
