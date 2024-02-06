@@ -28,7 +28,7 @@ jobs:
 
     - name: Set Docker Tag
       id: set_tag
-      run: echo "::set-output name=tag::latest-$(git rev-parse --short HEAD)"
+      run: echo "::set-output name=tag::master-$(git rev-parse --short HEAD)"
 
     - name: Trigger Workflow in Repo B
       uses: peter-evans/repository-dispatch@v2
