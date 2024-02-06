@@ -14,7 +14,7 @@ app.get("/api", (req, res) => {
 });
 
 app.get('*', function(req, res){
-  res.status(404).send('please correct your endpoints???'); 
+  res.status(404).send('youar endpoint is not correct???'); 
 });
    
 
